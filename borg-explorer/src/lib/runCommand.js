@@ -1,8 +1,11 @@
 const { exec } = require('child_process');
 
-const defaultBorgInstallationPathLinux = '/usr/local/bin/'
-const defaultBorgInstallationPathMac = '/opt/homebrew/bin/'
-const defaultPathEnvVar = `${defaultBorgInstallationPathLinux}:${defaultBorgInstallationPathMac}`
+const defaultBorgInstallationPaths = [
+  '/usr/bin/',          // Linux
+  '/usr/local/bin/',    // Linux alternate
+  '/opt/homebrew/bin/', // MacOS
+];
+const defaultPathEnvVar = defaultBorgInstallationPaths.join(':')
 
 function runCommand(command) {
   return new Promise(function (resolve, reject) {
