@@ -73,9 +73,14 @@ ipcMain.on('open-database', (event, path, passphrase) => {
       })
       
       listingWindow.loadFile(path.join(__dirname, 'listing.html'));
+      //listingWindow.webContents.openDevTools();
       // TODO: Close main window
     })
     .catch(function (error) {
       event.sender.send('error-message', error.message);
     });
+})
+
+ipcMain.on('close-listing', (event) => {
+  event.sender.close();
 })

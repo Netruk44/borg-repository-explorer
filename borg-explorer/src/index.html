@@ -17,7 +17,7 @@
     <input type="password" id="archive-passphrase"/>
     <button id="open-button">Open</button>
     <script type="text/javascript">
-      const { remote, dialog, ipcRenderer } = require('electron');
+      const { remote, ipcRenderer } = require('electron');
   
       const pathInput = document.getElementById('path-input');
       const passphraseInput = document.getElementById('archive-passphrase');

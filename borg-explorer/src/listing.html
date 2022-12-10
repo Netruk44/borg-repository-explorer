@@ -13,5 +13,14 @@
     <div class="buttons">
       <button id="close-button">Close</button>
     </div>
+    <script type="text/javascript">
+      const { ipcRenderer } = require('electron');
+
+      const closeButton = document.getElementById('close-button');
+
+      closeButton.addEventListener('click', function () {
+        ipcRenderer.send('close-listing')
+      })
+    </script>
   </body>
 </html>
