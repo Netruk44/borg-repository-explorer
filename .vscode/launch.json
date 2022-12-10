@@ -1,0 +1,20 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug borg-explorer",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/borg-explorer",
+      "runtimeExecutable": "${workspaceFolder}/borg-explorer/node_modules/.bin/electron",
+      "windows": {
+        "runtimeExecutable": "${workspaceFolder}/borg-explorer/node_modules/.bin/electron.cmd"
+      },
+      "osx": {
+        "runtimeExecutable": "${workspaceFolder}/borg-explorer/node_modules/.bin/electron"
+      },
+      "args" : ["."],
+      "outputCapture": "std"
+    }
+  ]
+}
