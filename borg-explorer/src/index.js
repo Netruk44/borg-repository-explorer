@@ -61,7 +61,19 @@ ipcMain.on('open-database', (event, path, passphrase) => {
   // TODO: Check database, transition to main window
   runBorgInfo(path, passphrase)
     .then(function (output) {
-
+      const path = require('path');
+      const listingWindow = new BrowserWindow({
+        width: 600,
+        height: 600,
+        webPreferences: {
+          preload: path.join(__dirname, 'preload.js'),
+          nodeIntegration: true,
+          contextIsolation: false,
+        },
+      })
+      
+      listingWindow.loadFile(path.join(__dirname, 'listing.html'));
+      // TODO: Close main window
     })
     .catch(function (error) {
       event.sender.send('error-message', error.message);
