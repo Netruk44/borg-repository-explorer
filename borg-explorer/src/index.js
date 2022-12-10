@@ -57,13 +57,13 @@ ipcMain.on('show-open-dialog', function (event, options) {
   });
 });
 
-ipcMain.on('open-database', (event, path) => {
+ipcMain.on('open-database', (event, path, passphrase) => {
   // TODO: Check database, transition to main window
-  runBorgInfo(path, '12345678')
+  runBorgInfo(path, passphrase)
     .then(function (output) {
 
     })
     .catch(function (error) {
-      // Handle the error
+      event.sender.send('error-message', error.message);
     });
 })

@@ -5,17 +5,26 @@
   </head>
   <body>
     <h1>Borg Backup Database Explorer</h1>
-    <p>Please enter the path to your Borg backup database:</p>
+    <p>Enter the path and password to your Borg backup database:</p>
+    <div id="error-message"></div>
+    <strong>Archive Path:</strong>
     <input type="text" id="path-input" />
-    <button id="browse-button">Browse...</button>
+    <button id="browse-button">Browse...</button><br />
+    <strong>Archive Passphrase:</strong>
+    <input type="text" id="archive-passphrase" />
     <button id="open-button">Open</button>
     <script type="text/javascript">
       const { remote, dialog, ipcRenderer } = require('electron');
-      //const ipcRenderer = require('electron').ipcRenderer;
   
       const pathInput = document.getElementById('path-input');
+      const passphraseInput = document.getElementById('archive-passphrase');
       const browseButton = document.getElementById('browse-button');
       const openButton = document.getElementById('open-button');
+      const errorMessage = document.getElementById('error-message');
+
+      ipcRenderer.on('error-message', function (event, message) {
+        errorMessage.innerHTML = message;
+      });
   
       browseButton.addEventListener('click', function () {
         const options = {
@@ -25,8 +34,6 @@
       });
       
       ipcRenderer.on('open-dialog-result', function (event, result) {
-        //console.log("Got result");
-        //console.log(result);
         if (result.filePaths) {
           pathInput.value = result.filePaths[0];
         }
@@ -34,7 +41,8 @@
   
       openButton.addEventListener('click', function () {
         const path = pathInput.value;
-        ipcRenderer.send('open-database', path);
+        const passphrase = passphraseInput.value;
+        ipcRenderer.send('open-database', path, passphrase);
       });
     </script>
   </body>
