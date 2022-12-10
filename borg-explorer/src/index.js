@@ -1,5 +1,6 @@
 const { app, BrowserWindow, dialog, ipcMain } = require('electron');
 const path = require('path');
+const { runBorgInfo } = require('./lib/runCommand');
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -56,6 +57,13 @@ ipcMain.on('show-open-dialog', function (event, options) {
   });
 });
 
-ipcMain.on('open-database', () => {
+ipcMain.on('open-database', (event, path) => {
   // TODO: Check database, transition to main window
+  runBorgInfo(path, '12345678')
+    .then(function (output) {
+
+    })
+    .catch(function (error) {
+      // Handle the error
+    });
 })

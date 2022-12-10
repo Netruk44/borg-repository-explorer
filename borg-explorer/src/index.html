@@ -25,8 +25,8 @@
       });
       
       ipcRenderer.on('open-dialog-result', function (event, result) {
-        console.log("Got result");
-        console.log(result);
+        //console.log("Got result");
+        //console.log(result);
         if (result.filePaths) {
           pathInput.value = result.filePaths[0];
         }
