@@ -1,17 +1,19 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta charset="UTF-8" />
     <title>Borg Backup Database Explorer</title>
+    <link rel="stylesheet" href="index.css" />
   </head>
   <body>
     <h1>Borg Backup Database Explorer</h1>
     <p>Enter the path and password to your Borg backup database:</p>
-    <div id="error-message"></div>
+    <div id="error-message" class="error-message"></div>
     <strong>Archive Path:</strong>
-    <input type="text" id="path-input" />
+    <input type="text" id="path-input" spellcheck="false" />
     <button id="browse-button">Browse...</button><br />
     <strong>Archive Passphrase:</strong>
-    <input type="text" id="archive-passphrase" />
+    <input type="password" id="archive-passphrase"/>
     <button id="open-button">Open</button>
     <script type="text/javascript">
       const { remote, dialog, ipcRenderer } = require('electron');
