@@ -8,7 +8,7 @@
   <body>
     <h1>Borg Repository</h1>
     <div class="main-view">
-      <iframe src="file-listing.html" class="file-listing"></iframe>
+      <iframe src="file-listing.html" id="file-listing" class="file-listing"></iframe>
     </div>
     <div class="buttons">
       <button id="close-button">Close</button>
@@ -17,10 +17,25 @@
       const { ipcRenderer } = require('electron');
 
       const closeButton = document.getElementById('close-button');
+      const fileListing = document.getElementById('file-listing');
 
       closeButton.addEventListener('click', function () {
         ipcRenderer.send('close-listing')
-      })
+      });
+
+      ipcRenderer.on('open-archive', (event, data) => {
+        console.log('open-archive');
+        data_obj = JSON.parse(data);
+        const archive_path = data_obj.path;
+        const archive_passphrase = data_obj.passphrase;
+
+        // TODO: Load archive
+        const fileListingData = {
+          archive_path: archive_path,
+        };
+        fileListing.contentWindow.postMessage(fileListingData, '*');
+      });
+
     </script>
   </body>
 </html>

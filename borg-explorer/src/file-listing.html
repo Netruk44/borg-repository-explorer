@@ -8,4 +8,12 @@
   <body>
     File listing TODO
   </body>
+  <script type="text/javascript">
+    const { ipcRenderer } = parent.require('electron');
+
+    window.addEventListener('message', (event) => {
+      //console.log(event);
+      document.body.innerHTML = JSON.stringify(event.data);
+    })
+  </script>
 </html>

@@ -1,6 +1,8 @@
-const { app, BrowserWindow, dialog, ipcMain } = require('electron');
+const { app, BrowserWindow, dialog, ipcMain, BrowserView } = require('electron');
 const path = require('path');
 const { runBorgInfo } = require('./lib/runCommand');
+
+var indexIsMostRecentWindowOpened = false;
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -23,7 +25,9 @@ const createWindow = () => {
   mainWindow.loadFile(path.join(__dirname, 'index.html'));
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools();
+  //mainWindow.webContents.openDevTools();
+
+  indexIsMostRecentWindowOpened = true;
 };
 
 // This method will be called when Electron has finished
@@ -35,8 +39,11 @@ app.on('ready', createWindow);
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
 app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
+  /*if (process.platform !== 'darwin') {
     app.quit();
+  }*/
+  if (!indexIsMostRecentWindowOpened) {
+    createWindow();
   }
 });
 
@@ -57,11 +64,11 @@ ipcMain.on('show-open-dialog', function (event, options) {
   });
 });
 
-ipcMain.on('open-database', (event, path, passphrase) => {
+ipcMain.on('open-database', (event, database_path, passphrase) => {
   // TODO: Check database, transition to main window
-  runBorgInfo(path, passphrase)
+  runBorgInfo(database_path, passphrase)
     .then(function (output) {
-      const path = require('path');
+      //const path = require('path');
       const listingWindow = new BrowserWindow({
         width: 600,
         height: 600,
@@ -74,7 +81,27 @@ ipcMain.on('open-database', (event, path, passphrase) => {
       
       listingWindow.loadFile(path.join(__dirname, 'listing.html'));
       //listingWindow.webContents.openDevTools();
-      // TODO: Close main window
+
+      // Create a BrowserView for the file listing
+      /*const listingView = new BrowserView();
+      listingWindow.setBrowserView(listingView);
+      listingView.setBounds({ x: 0, y: 150, width: 700, height: 400});
+      listingView.setAutoResize({ width: true, height: true })
+      listingView.webContents.loadFile(path.join(__dirname, 'file-listing.html'));*/
+
+      // Send archive path and passphrase
+      listingWindow.webContents.on('did-finish-load', () => {
+        const listingWindowData = {
+          path: database_path,
+          passphrase: passphrase,
+        };
+        listingWindow.webContents.send('open-archive', JSON.stringify(listingWindowData));
+      });
+      
+      // Close main window
+      event.sender.close();
+
+      indexIsMostRecentWindowOpened = false;
     })
     .catch(function (error) {
       event.sender.send('error-message', error.message);
