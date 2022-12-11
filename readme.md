@@ -7,4 +7,4 @@ This project is is a **⚠️Work In Progress⚠️**, and it is not guaranteed 
 This project was created with assistance from [ChatGPT](https://chat.openai.com/chat).
 
 ## Screenshot(s)
-![](./images/ss1.png)
+<img src="./images/ss1.png" width=650 />
