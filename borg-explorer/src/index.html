@@ -10,12 +10,28 @@
     <h1>Borg Backup Database Explorer</h1>
     <p>Enter the path and password to your Borg backup database:</p>
     <div id="error-message" class="error-message"></div>
-    <strong>Archive Path:</strong>
-    <input type="text" id="path-input" spellcheck="false" />
-    <button id="browse-button">Browse...</button><br />
-    <strong>Archive Passphrase:</strong>
-    <input type="password" id="archive-passphrase"/>
-    <button id="open-button">Open</button>
+    <div class="label">
+      Archive Path:
+    </div>
+    <div class="flex-container-horiz">
+      <div class="flex-container-item" style="flex-grow:1">
+        <input type="text" id="path-input" spellcheck="false" />
+      </div>
+      <div class="flex-container-item" style="flex-grow:0">
+        <button id="browse-button">Browse...</button>
+      </div>
+    </div>
+    <div class="label">
+      Archive Passphrase:
+    </div>
+    <div class="flex-container-horiz">
+      <div class="flex-container-item" style="flex-grow:1">
+        <input type="password" id="archive-passphrase"/>
+      </div>
+      <div class="flex-container-item" style="flex-grow:0">
+        <button id="open-button">Open</button>
+      </div>
+    </div>
     <script type="text/javascript">
       const { remote, ipcRenderer } = require('electron');
   

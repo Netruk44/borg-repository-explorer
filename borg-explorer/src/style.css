@@ -30,3 +30,28 @@ h1 {
   font-family: "Courier New", monospace;
   padding: 10px;
 }
+
+.flex-container-horiz {
+  margin-left: 0.5em;
+  margin-right: 0.5em;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  align-content: center;
+}
+
+.flex-container-item {
+  flex: 1;
+}
+
+.flex-container-item > input[type="password"], .flex-container-item > input[type="text"] {
+  width: calc(100% - 2em);
+}
+
+.flex-container-item > button {
+  margin-left: 0.5em;
+}
+
+.label {
+  font-weight: bold;
+}
