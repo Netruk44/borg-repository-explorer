@@ -1,6 +1,6 @@
-# Borg Backup Database Explorer
+# Borg Backup Repository Explorer
 
-This repository contains a personal project that is a simple GUI explorer for a Borg backup database.
+This repository contains a personal project that is a simple GUI explorer for a Borg backup repository.
 
 This project is is a **⚠️Work In Progress⚠️**, and it is not guaranteed to be completed or maintained.
 
