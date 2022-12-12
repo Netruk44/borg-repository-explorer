@@ -10,13 +10,22 @@
   <script type="text/javascript">
     const { ipcRenderer } = parent.require('electron');
 
-    function openRepository(data) {
-      path = data.path;
-      passphrase = data.passphrase;
+    var currentPath = null;
+    var currentPassphrase = null;
 
-      // TODO: Open archive
-      document.body.innerHTML = `Opening archive ${path}`;
+    function openRepository(data) {
+      currentPath = data.path;
+      currentPassphrase = data.passphrase;
+
+      // Open archive
+      document.body.innerHTML = `Opening archive ${currentPath}`;
+      ipcRenderer.send('list-archive', JSON.stringify({path: currentPath, passphrase: currentPassphrase}));
     }
+
+    ipcRenderer.on('list-archive-result', (event, data) => {
+      // TODO: Render logic, how do we display the list of archives and navigate?
+      document.body.innerHTML = `${JSON.stringify(data)}}`;
+    });
 
     const knownFunctions = {
       'open': openRepository,

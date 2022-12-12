@@ -1,6 +1,6 @@
 const { app, BrowserWindow, dialog, ipcMain, BrowserView } = require('electron');
 const path = require('path');
-const { runBorgInfo } = require('./lib/runCommand');
+const borg = require('./lib/borg');
 
 var indexIsMostRecentWindowOpened = false;
 
@@ -65,10 +65,9 @@ ipcMain.on('show-open-dialog', function (event, options) {
 });
 
 ipcMain.on('open-database', (event, database_path, passphrase) => {
-  // TODO: Check database, transition to main window
-  runBorgInfo(database_path, passphrase)
+  // Check database, transition to main window
+  borg.checkRepository(database_path, passphrase)
     .then(function (output) {
-      //const path = require('path');
       const listingWindow = new BrowserWindow({
         width: 600,
         height: 600,
@@ -80,7 +79,7 @@ ipcMain.on('open-database', (event, database_path, passphrase) => {
       })
       
       listingWindow.loadFile(path.join(__dirname, 'listing.html'));
-      //listingWindow.webContents.openDevTools();
+      listingWindow.webContents.openDevTools();
 
       // Create a BrowserView for the file listing
       /*const listingView = new BrowserView();
@@ -110,4 +109,12 @@ ipcMain.on('open-database', (event, database_path, passphrase) => {
 
 ipcMain.on('close-listing', (event) => {
   event.sender.close();
+})
+
+ipcMain.on('list-archive', (event, json_data) => {
+  const data = JSON.parse(json_data);
+  borg.getRepositoryArchiveList(data.path, data.passphrase)
+    .then(function (output) {
+      event.sender.send('list-archive-result', output);
+    });
 })
