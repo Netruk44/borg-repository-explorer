@@ -29,11 +29,12 @@
         const archive_path = data_obj.path;
         const archive_passphrase = data_obj.passphrase;
 
-        // TODO: Load archive
-        const fileListingData = {
-          archive_path: archive_path,
+        const commandData = {
+          command: 'open',
+          path: archive_path,
+          passphrase: archive_passphrase,
         };
-        fileListing.contentWindow.postMessage(fileListingData, '*');
+        fileListing.contentWindow.postMessage(commandData, '*');
       });
 
     </script>

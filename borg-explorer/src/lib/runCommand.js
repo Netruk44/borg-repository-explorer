@@ -37,7 +37,26 @@ function runBorgInfo(repoLocation, passphrase) {
   });
 }
 
+function runBorgList_Repository(repoLocation, passphrase) {
+  return new Promise(function (resolve, reject) {
+    const options = {
+      env: {
+        BORG_PASSPHRASE: passphrase,
+        PATH: defaultPathEnvVar
+      }
+    };
+    exec(`borg list ${repoLocation}`, options, function (error, stdout, stderr) {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(stdout);
+      }
+    });
+  });
+}
+
 module.exports = {
   runCommand: runCommand,
   runBorgInfo: runBorgInfo,
+  runBorgList_Repository: runBorgList_Repository,
 };

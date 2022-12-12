@@ -6,14 +6,35 @@
     <link rel="stylesheet" type="text/css" href="file-listing.css">
   </head>
   <body>
-    File listing TODO
   </body>
   <script type="text/javascript">
     const { ipcRenderer } = parent.require('electron');
 
+    function openRepository(data) {
+      path = data.path;
+      passphrase = data.passphrase;
+
+      // TODO: Open archive
+      document.body.innerHTML = `Opening archive ${path}`;
+    }
+
+    const knownFunctions = {
+      'open': openRepository,
+    };
+
     window.addEventListener('message', (event) => {
       //console.log(event);
-      document.body.innerHTML = JSON.stringify(event.data);
+      //document.body.innerHTML = JSON.stringify(event.data);
+      debugger;
+
+      // Check if we're aware of the command
+      if (event.data.command in knownFunctions) {
+        // Known function, call it
+        knownFunctions[event.data.command](event.data);
+      }
+      else {
+        debugger;
+      }
     })
   </script>
 </html>
