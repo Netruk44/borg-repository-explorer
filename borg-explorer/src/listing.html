@@ -7,11 +7,13 @@
   </head>
   <body>
     <h1>Borg Repository</h1>
-    <div class="main-view">
-      <iframe src="file-listing.html" id="file-listing" class="file-listing"></iframe>
-    </div>
-    <div class="buttons">
-      <button id="close-button">Close</button>
+    <div class="flex-container-vert" style="height:80%">
+      <div class="flex-container-item" id="main-view" style="flex-grow:1">
+        <iframe src="file-listing.html" id="file-listing"></iframe>
+      </div>
+      <div class="flex-container-item" id="buttons" style="flex-grow:0">
+        <button id="close-button">Close</button>
+      </div>
     </div>
     <script type="text/javascript">
       const { ipcRenderer } = require('electron');

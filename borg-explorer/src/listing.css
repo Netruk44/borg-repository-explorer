@@ -1,17 +1,17 @@
-.main-view {
+#main-view {
   width: 100%;
   height: 70%;
   padding-bottom: 10px;
 }
 
-.file-listing {
+#file-listing {
   width: 100%;
   height: 100%;
 }
 
-.buttons {
+#buttons {
   width: 100%;
-  height: 10%;
+  height: 10pt;
 }
 
 html, body { 
