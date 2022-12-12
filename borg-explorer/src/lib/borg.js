@@ -14,8 +14,7 @@ class BorgCommandFactory {
 
   // Create a command to run borg info.
   CreateBorgInfoCommand(repoLocation, passphrase) {
-    return new Command()
-      .SetCommand('borg')
+    return new Command('borg')
       .WithArgs(['info', repoLocation])
       .SetEnv({
         BORG_PASSPHRASE: passphrase,
@@ -25,8 +24,7 @@ class BorgCommandFactory {
 
   // Create a command to run borg list.
   CreateBorgListCommand(repoLocation, passphrase) {
-    return new Command()
-      .SetCommand('borg')
+    return new Command('borg')
       .WithArgs(['list', repoLocation])
       .SetEnv({
         BORG_PASSPHRASE: passphrase,

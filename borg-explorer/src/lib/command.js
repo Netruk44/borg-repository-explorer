@@ -7,10 +7,10 @@ const { ipcMain } = require('electron');
 // pattern, where the user can chain methods to set everything,
 // followed by a call to .Run() to execute the command.
 class Command {
-  constructor() {
-    this.command = '';
-    this.env = {};
-    this.args = [];
+  constructor(command = '', args = [], env = {}) {
+    this.command = command;
+    this.args = args;
+    this.env = env;
   }
 
   // Set the command to run.
