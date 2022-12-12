@@ -1,7 +1,41 @@
-const commandFactory = require('./commandFactory');
+const { Command } = require('./command');
 
-const borgCommandFactory = new commandFactory.BorgCommandFactory();
+// Define a BorgCommandFactory class that contains methods to
+// create commands to run borg commands.
+class BorgCommandFactory {
+  constructor() {
+    this.defaultBorgInstallationPaths = [
+      '/usr/bin/',          // Linux
+      '/usr/local/bin/',    // Linux alternate
+      '/opt/homebrew/bin/', // MacOS
+    ];
+    this.defaultPathEnvVar = this.defaultBorgInstallationPaths.join(':');
+  }
 
+  // Create a command to run borg info.
+  CreateBorgInfoCommand(repoLocation, passphrase) {
+    return new Command()
+      .SetCommand('borg')
+      .WithArgs(['info', repoLocation])
+      .SetEnv({
+        BORG_PASSPHRASE: passphrase,
+        PATH: this.defaultPathEnvVar
+      });
+  }
+
+  // Create a command to run borg list.
+  CreateBorgListCommand(repoLocation, passphrase) {
+    return new Command()
+      .SetCommand('borg')
+      .WithArgs(['list', repoLocation])
+      .SetEnv({
+        BORG_PASSPHRASE: passphrase,
+        PATH: this.defaultPathEnvVar
+      });
+  }
+}
+
+const borgCommandFactory = new BorgCommandFactory();
 
 function checkRepository(repoLocation, repoPassphrase) {
   // Simply run `borg info` on the repository to see if it succeeds.
