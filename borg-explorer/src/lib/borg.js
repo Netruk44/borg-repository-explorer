@@ -12,24 +12,22 @@ class BorgCommandFactory {
     this.defaultPathEnvVar = this.defaultBorgInstallationPaths.join(':');
   }
 
-  // Create a command to run borg info.
-  CreateBorgInfoCommand(repoLocation, passphrase) {
+  CreateBaseBorgCommand(passphrase) {
     return new Command('borg')
-      .WithArgs(['info', repoLocation])
       .SetEnv({
         BORG_PASSPHRASE: passphrase,
         PATH: this.defaultPathEnvVar
       });
   }
 
-  // Create a command to run borg list.
+  CreateBorgInfoCommand(repoLocation, passphrase) {
+    return this.CreateBaseBorgCommand(passphrase)
+      .WithArgs(['info', repoLocation]);
+  }
+
   CreateBorgListCommand(repoLocation, passphrase) {
-    return new Command('borg')
+    return this.CreateBaseBorgCommand(passphrase)
       .WithArgs(['list', repoLocation])
-      .SetEnv({
-        BORG_PASSPHRASE: passphrase,
-        PATH: this.defaultPathEnvVar
-      });
   }
 }
 
@@ -40,21 +38,13 @@ function checkRepository(repoLocation, repoPassphrase) {
   return borgCommandFactory.CreateBorgInfoCommand(repoLocation, repoPassphrase).Run();
 }
 
-function parseBorgListOutput(output) {
-  // TODO: Real implementation.
-  const archiveList = output.split('\n');
-  return archiveList;
-}
-
 function getRepositoryArchiveList(repoLocation, repoPassphrase) {
-  // Get the command to run borg list.
-  const command = borgCommandFactory.CreateBorgListCommand(repoLocation, repoPassphrase);
-
-  // TODO: Add formatting arguments to the command.
+  // Run borg list for archive, format output as json
+  const command = borgCommandFactory.CreateBorgListCommand(repoLocation, repoPassphrase)
+      .WithArg('--json');
 
   // Run the command, parse the output, return the structured output.
-  return command.Run()
-    .then(parseBorgListOutput);
+  return command.Run().then(JSON.parse);
 }
 
 module.exports = {
