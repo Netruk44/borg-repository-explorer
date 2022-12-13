@@ -10,14 +10,22 @@ class BorgCommandFactory {
       '/opt/homebrew/bin/', // MacOS
     ];
     this.defaultPathEnvVar = this.defaultBorgInstallationPaths.join(':');
+    this.borgPath = 'borg';
+  }
+
+  SetRemoteBorgPath(path) {
+    this.borgPath = path;
   }
 
   CreateBaseBorgCommand(passphrase) {
-    return new Command('borg')
+    var cmd = new Command('borg')
+      .WithArgs(['--remote-path', this.borgPath])
       .SetEnv({
         BORG_PASSPHRASE: passphrase,
         PATH: this.defaultPathEnvVar
       });
+
+      return cmd;
   }
 
   CreateBorgInfoCommand(repoLocation, passphrase) {
