@@ -19,7 +19,7 @@
 
       // Open archive
       document.body.innerHTML = `Opening archive ${currentPath}`;
-      ipcRenderer.send('list-archive', JSON.stringify({path: currentPath, passphrase: currentPassphrase}));
+      ipcRenderer.send('list-archive', currentPath, currentPassphrase);
     }
 
     ipcRenderer.on('list-archive-result', (event, data) => {

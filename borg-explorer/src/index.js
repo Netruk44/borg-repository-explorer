@@ -111,9 +111,8 @@ ipcMain.on('close-listing', (event) => {
   event.sender.close();
 })
 
-ipcMain.on('list-archive', (event, json_data) => {
-  const data = JSON.parse(json_data);
-  borg.getRepositoryArchiveList(data.path, data.passphrase)
+ipcMain.on('list-archive', (event, path, passphrase) => {
+  borg.getRepositoryArchiveList(path, passphrase)
     .then(function (output) {
       event.sender.send('list-archive-result', output);
     });

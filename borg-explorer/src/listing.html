@@ -26,7 +26,6 @@
       });
 
       ipcRenderer.on('open-archive', (event, data) => {
-        console.log('open-archive');
         data_obj = JSON.parse(data);
         const archive_path = data_obj.path;
         const archive_passphrase = data_obj.passphrase;
