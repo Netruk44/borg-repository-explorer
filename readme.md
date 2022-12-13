@@ -8,3 +8,4 @@ This project was created with assistance from [ChatGPT](https://chat.openai.com/
 
 ## Screenshot(s)
 <img src="./images/ss1.png" width=650 />
+<img src="./images/ss2.png" width=650 />
