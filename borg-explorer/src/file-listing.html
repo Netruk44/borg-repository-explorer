@@ -26,6 +26,7 @@
       // Navigate to the given path in the repository.
       // If no path is given, navigate to the root of the repository.
       //ipcRenderer.send('list-archive', currentRepoPath, currentRepoPass, relativePath);
+      console.log(`Navigating to ${relativePath}`);
       return; // TODO
     }
 
@@ -68,17 +69,13 @@
       }
       */
 
-      // First render a subtitle for the archive.
-      // Ex. "Listing for repository <location>"
-      // Note: When showing repository, only the folder name should be shown.
-      var heading = document.createElement('h2');
-      heading.innerHTML = `Listing for repository ${data.repository.location.split('/').pop()}`;
-      document.body.appendChild(heading);
-
-      // Show repository id and location in regular text below.
+      // Create a header with the repository location and ID.
       var repoMetadata = document.createElement('div');
-      repoMetadata.classList.add('repo-metadata');
-      repoMetadata.innerHTML = `<strong>Repository ID:</strong> ${data.repository.id}<br><strong>Location:</strong> ${data.repository.location}`;
+      repoMetadata.classList.add('repo-info');
+      repoMetadata.innerHTML = `
+        <h2>Listing for repository "${data.repository.location.split('/').pop()}"</h2>
+        <strong>Repository ID:</strong> ${data.repository.id}<br>
+        <strong>Location:</strong> ${data.repository.location}`;
       document.body.appendChild(repoMetadata);
 
       // Create a list of archives with links to open them.

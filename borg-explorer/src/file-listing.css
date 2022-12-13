@@ -8,8 +8,8 @@ body {
   padding: 0;
 }
 
-.repo-metadata {
-  background-color: #eee;
+.repo-info {
+  background-color: #ddd;
   border-bottom: 1px solid #333;
   padding: 0.5em;
   font-size: smaller;
@@ -22,7 +22,6 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: bold;
   margin: 0;
   padding: 0;
-  background-color: #eee;
 }
 
 a {
