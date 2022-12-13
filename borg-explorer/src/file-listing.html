@@ -32,17 +32,14 @@
     };
 
     window.addEventListener('message', (event) => {
-      //console.log(event);
-      //document.body.innerHTML = JSON.stringify(event.data);
-      debugger;
-
-      // Check if we're aware of the command
+      // Received a message from the parent window.
+      // Check if we're aware of the command we've received.
       if (event.data.command in knownFunctions) {
-        // Known function, call it
+        // Known function, forward the data to the function
         knownFunctions[event.data.command](event.data);
       }
       else {
-        debugger;
+        console.error(`Unknown command sent to file listing: ${event.data.command}`);
       }
     })
   </script>
