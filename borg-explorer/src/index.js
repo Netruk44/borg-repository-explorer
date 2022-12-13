@@ -103,7 +103,7 @@ ipcMain.on('open-database', (event, database_path, passphrase) => {
       indexIsMostRecentWindowOpened = false;
     })
     .catch(function (error) {
-      event.sender.send('error-message', error.message);
+      event.sender.send('error-message', error);
     });
 })
 
