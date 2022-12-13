@@ -41,8 +41,6 @@ h1 {
 }
 
 .flex-container-vert {
-  margin-left: 0.5em;
-  margin-right: 0.5em;
   display: flex;
   flex-direction: column;
   align-items: center;
