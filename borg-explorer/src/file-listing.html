@@ -9,22 +9,101 @@
   </body>
   <script type="text/javascript">
     const { ipcRenderer } = parent.require('electron');
+    const moment = parent.require('./lib/moment');
 
-    var currentPath = null;
-    var currentPassphrase = null;
+    var currentRepoPath = null;
+    var currentRepoPass = null;
+    var currentNavigationPath = null;
 
+    /**************************************************************************
+     * Local Window Helpers
+     **************************************************************************/
+    function clear() {
+      document.body.innerHTML = '';
+    }
+
+    function navigateRepo(relativePath = '.') {
+      // Navigate to the given path in the repository.
+      // If no path is given, navigate to the root of the repository.
+      //ipcRenderer.send('list-archive', currentRepoPath, currentRepoPass, relativePath);
+      return; // TODO
+    }
+
+    /**************************************************************************
+     * Parent Window Communication
+     **************************************************************************/
     function openRepository(data) {
-      currentPath = data.path;
-      currentPassphrase = data.passphrase;
+      currentRepoPath = data.path;
+      currentRepoPass = data.passphrase;
 
       // Open archive
-      document.body.innerHTML = `Opening archive ${currentPath}`;
-      ipcRenderer.send('list-archive', currentPath, currentPassphrase);
+      document.body.innerHTML = `<h2>Opening archive ${currentRepoPath}</h1>`;
+      ipcRenderer.send('list-archive', currentRepoPath, currentRepoPass);
     }
 
     ipcRenderer.on('list-archive-result', (event, data) => {
-      // TODO: Render logic, how do we display the list of archives and navigate?
-      document.body.innerHTML = `${JSON.stringify(data)}}`;
+      //document.body.innerHTML = `${JSON.stringify(data)}}`;
+      clear();
+
+      /* Data is an object that looks like:
+      {
+        "archives": [
+          {
+            "archive": "<archive-name>",
+            "barchive": "<archive-name>",
+            "id": "<archive-id>",
+            "start": "<start-time>",
+            "time": "<end-time>",
+          },
+          {
+          },
+        ],
+        "encryption": {
+          "mode": "repokey-blake2"
+        },
+        "repository": {
+          "id": "",
+          "location": "",
+        }
+      }
+      */
+
+      // First render a subtitle for the archive.
+      // Ex. "Listing for repository <location>"
+      // Note: When showing repository, only the folder name should be shown.
+      var heading = document.createElement('h2');
+      heading.innerHTML = `Listing for repository ${data.repository.location.split('/').pop()}`;
+      document.body.appendChild(heading);
+
+      // Show repository id and location in regular text below.
+      var repoMetadata = document.createElement('div');
+      repoMetadata.classList.add('repo-metadata');
+      repoMetadata.innerHTML = `<strong>Repository ID:</strong> ${data.repository.id}<br><strong>Location:</strong> ${data.repository.location}`;
+      document.body.appendChild(repoMetadata);
+
+      // Create a list of archives with links to open them.
+      // Links will call navigateRepo with the archive name.
+      // Next to the links there will be a description using the time the archive was created.
+      var archiveList = document.createElement('ul');
+      for (var archive of data.archives) {
+        var archiveItem = document.createElement('li');
+        var archiveLink = document.createElement('a');
+        archiveLink.classList.add('archive-link');
+        archiveLink.innerHTML = archive.archive;
+        archiveLink.href = '#';
+        archiveLink.addEventListener('click', () => {
+          navigateRepo(archive.archive);
+        });
+        archiveItem.appendChild(archiveLink);
+        var archiveDescription = document.createElement('span');
+        archiveDescription.classList.add('archive-description');
+        // Use moment to get the relative time from archive completion to now.
+        archiveDescription.innerHTML = ` - ${moment(archive.time).fromNow()}`;
+        archiveItem.appendChild(archiveDescription);
+        archiveList.appendChild(archiveItem);
+      }
+
+      document.body.appendChild(archiveList);
     });
 
     const knownFunctions = {
