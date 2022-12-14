@@ -8,15 +8,15 @@ This project was created with assistance from [ChatGPT](https://chat.openai.com/
 
 ## Current State
 
-Still in very early development. Nearly no functionality is implemented yet.
+Still in early development. Nearly no functionality is implemented yet, and usefulness is limited.
 
 ### Implemented
 * Browsing for a repository directory.
 * Verifying a passphrase is correct for a Borg repository.
 * Listing archives contained within a Borg repository.
+* Very rudimentary listing of files contained within an archive.
 
 ### Not Implemented
-* Listing the files contained within an archive.
 * Viewing or extracting files from an archive.
 
 ## Screenshot(s)
