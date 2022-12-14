@@ -85,8 +85,24 @@ function getArchiveFileList(repoLocation, repoPassphrase, archiveName, archivePa
   });
 }
 
+function getArchiveFileListStream(repoLocation, repoPassphrase, archiveName, archivePath, onOutput, onEnd) {
+  const command = borgCommandFactory.CreateBorgListArchiveCommand(repoLocation, repoPassphrase, archiveName)
+      .WithArg('--json-lines');
+
+  if (archivePath != null) {
+    command.WithArgs(['--pattern', `re:^${archivePath}[^/]*$]`])
+  }
+
+  return command.RunStream((line) => {
+    if (line.length > 0) {
+      onOutput(JSON.parse(line));
+    }
+  }, onEnd);
+}
+
 module.exports = {
   checkRepository: checkRepository,
   getRepositoryArchiveList: getRepositoryArchiveList,
-  getArchiveFileList: getArchiveFileList
+  getArchiveFileList: getArchiveFileList,
+  getArchiveFileListStream: getArchiveFileListStream,
 };

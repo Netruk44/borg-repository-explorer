@@ -1,4 +1,4 @@
-const { exec } = require('child_process');
+const { exec, spawn } = require('child_process');
 const { ipcMain } = require('electron');
 
 // Define a Command class that contains a string command to run,
@@ -78,6 +78,52 @@ class Command {
         } else {
           resolve(stdout);
         }
+      });
+    });
+  }
+
+  // onData is called once per line of output.
+  RunStream(onData, onEnd) {
+    // Can't access 'this' inside Promise
+    const parent = this;
+
+    return new Promise(function (resolve, reject) {
+      const options = {
+        env: parent.env
+      }
+
+      const child = spawn(parent.command, parent.args, options);
+      
+      var lineBuffer = '';
+      child.stdout.on('data', (data) => {
+        var lines = (lineBuffer + data).split('\n');
+
+        // If the last line doesn't end with a newline, then it's
+        // not a complete line, so we'll save it for later.
+        if (data[data.length - 1] != '\n') {
+          lineBuffer = lines.pop();
+        } else {
+          lineBuffer = '';
+        }
+
+        lines.forEach((line) => {
+          onData(line);
+        });
+      });
+
+      child.stdout.on('end', () => {
+        // If there's anything left in the buffer, then it's
+        // a complete line, so we'll send it.
+        if (lineBuffer.length > 0) {
+          onData(lineBuffer);
+        }
+
+        onEnd();
+        resolve();
+      });
+
+      child.stderr.on('data', (data) => {
+        reject(data);
       });
     });
   }

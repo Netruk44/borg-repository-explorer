@@ -37,7 +37,13 @@
       // Open the given archive.
       console.log(`Opening archive ${archiveName}`);
       currentArchiveName = archiveName;
-      ipcRenderer.send('list-archive', currentRepoPath, currentRepoPass, archiveName, null /* Get entire archive */);
+      // Synchronous version, doesn't work for a repository of any normal size.
+      //ipcRenderer.send('list-archive', currentRepoPath, currentRepoPass, archiveName, null /* Get entire archive */);
+
+      clear();
+      currentArchive = new BorgArchiveFileTree([]);
+      currentNavigationPath = '';
+      ipcRenderer.send('list-archive-stream', currentRepoPath, currentRepoPass, archiveName, null /* Get entire archive */);
     }
 
     function openFile(relativePath) {
@@ -127,6 +133,18 @@
       currentArchive = new BorgArchiveFileTree(data);
       currentNavigationPath = '';
       renderCurrentArchivePath();
+    });
+
+    ipcRenderer.on('list-archive-stream-data', (event, data) => {
+      currentArchive.addStreamData(data);
+    });
+
+    ipcRenderer.on('list-archive-stream-end', (event) => {
+      renderCurrentArchivePath();
+    });
+
+    ipcRenderer.on('list-archive-stream-error', (event, data) => {
+      console.log(`Error: ${data}`);
     });
 
     function renderCurrentArchivePath() {

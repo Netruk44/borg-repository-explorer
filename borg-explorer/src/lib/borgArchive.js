@@ -162,6 +162,11 @@ class BorgArchiveFileTree {
 
     return this.fileTree.get(path);
   }
+
+  addStreamData(nextItem) {
+    // Add the next item to the file tree
+    this.fileTree.set(nextItem.path, new FileTreeItem(nextItem));
+  }
 }
 
 module.exports = BorgArchiveFileTree;

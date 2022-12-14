@@ -124,3 +124,17 @@ ipcMain.on('list-archive', (event, path, passphrase, archive, archivePath) => {
       event.sender.send('list-archive-result', output);
     });
 });
+
+ipcMain.on('list-archive-stream', (event, path, passphrase, archive, archivePath) => {
+  const onData = (data) => {
+    event.sender.send('list-archive-stream-data', data);
+  };
+  const onEnd = () => {
+    event.sender.send('list-archive-stream-end');
+  };
+
+  borg.getArchiveFileListStream(path, passphrase, archive, archivePath, onData, onEnd)
+    .catch(function (error) {
+      event.sender.send('list-archive-stream-error', error);
+    });
+});
