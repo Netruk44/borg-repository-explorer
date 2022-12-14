@@ -50,6 +50,10 @@
       //ipcRenderer.send('list-archive', currentRepoPath, currentRepoPass, archiveName, null /* Get entire archive */);
 
       clear();
+
+      // Show a loading message.
+      document.body.innerHTML = `<h2>Loading archive ${archiveName}...</h1>`;
+
       currentArchive = new BorgArchiveFileTree([]);
       currentNavigationPath = '';
       ipcRenderer.send('list-archive-stream', currentRepoPath, currentRepoPass, archiveName, null /* Get entire archive */);
@@ -144,6 +148,7 @@
     });
 
     ipcRenderer.on('list-archive-stream-end', (event) => {
+      clear();
       renderCurrentArchivePath();
     });
 
