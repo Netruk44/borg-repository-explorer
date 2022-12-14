@@ -118,8 +118,8 @@ ipcMain.on('list-repository', (event, path, passphrase) => {
     });
 })
 
-ipcMain.on('list-archive', (event, path, passphrase, archive) => {
-  borg.getArchiveFileList(path, passphrase, archive)
+ipcMain.on('list-archive', (event, path, passphrase, archive, archivePath) => {
+  borg.getArchiveFileList(path, passphrase, archive, archivePath)
     .then(function (output) {
       event.sender.send('list-archive-result', output);
     });

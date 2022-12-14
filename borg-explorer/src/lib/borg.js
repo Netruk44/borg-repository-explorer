@@ -60,10 +60,20 @@ function getRepositoryArchiveList(repoLocation, repoPassphrase) {
   return command.Run().then(JSON.parse);
 }
 
-function getArchiveFileList(repoLocation, repoPassphrase, archiveName) {
+function getArchiveFileList(repoLocation, repoPassphrase, archiveName, archivePath) {
   // Run borg list for archive, format output as json-lines
   const command = borgCommandFactory.CreateBorgListArchiveCommand(repoLocation, repoPassphrase, archiveName)
       .WithArg('--json-lines');
+  
+  // If a path was specified, filter output to only files in that path.
+  if (archivePath != null) {
+    // Regex: ^<path>[^/]*$
+    // ^: Start of string
+    // <path>: The path to filter by
+    // [^/]*: Any number of characters that aren't a slash (filter out subdirectories)
+    // $: End of string
+    command.WithArgs(['--pattern', `re:^${archivePath}[^/]*$]`])
+  }
   
   // Because the output isn't valid JSON, we can't use JSON.parse directly.
   // Instead, manually parse the output into a list of JSON objects.

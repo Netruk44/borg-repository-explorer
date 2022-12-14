@@ -35,7 +35,10 @@
     function openArchive(archiveName) {
       // Open the given archive.
       console.log(`Opening archive ${archiveName}`);
-      ipcRenderer.send('list-archive', currentRepoPath, currentRepoPass, archiveName);
+      currentRepoArchive = archiveName;
+      currentNavigationPath = null; // Get entire archive.
+      //currentNavigationPath = ''; // Get root folder
+      ipcRenderer.send('list-archive', currentRepoPath, currentRepoPass, archiveName, currentNavigationPath);
     }
 
     function openFile(relativePath) {
@@ -101,6 +104,8 @@
         archiveLink.classList.add('archive-link');
         archiveLink.innerHTML = archive.archive;
         archiveLink.href = '#';
+        
+        // TODO (assumed): Fix all links referencing the final archive.
         archiveLink.addEventListener('click', () => {
           openArchive(archive.archive);
         });
@@ -157,6 +162,8 @@
         fileLink.classList.add('file-link');
         fileLink.innerHTML = file.path.split('/').pop();
         fileLink.href = '#';
+
+        // TODO: Fix all links referencing the final file.
         if (file.type == 'd') {
           fileLink.addEventListener('click', () => {
             navigateArchive(file.path);
@@ -174,11 +181,11 @@
         // If the entry is a directory, show modified time and age
         // If the entry is a file, show size (using prettyBytes), modified time and age.
         if (file.type == 'd') {
-          fileDescription.innerHTML = ` - ${moment(file.mtime)} (${moment(file.mtime).fromNow()})`;
+          fileDescription.innerHTML = ` - <span class='file-date'>${moment(file.mtime)} (${moment(file.mtime).fromNow()})</span>`;
         }
         else {
           //fileDescription.innerHTML = ` - ${file.size} bytes, ${moment(file.mtime)} (${moment(file.mtime).fromNow()})`;
-          fileDescription.innerHTML = ` - ${prettyBytes(file.size)}, ${moment(file.mtime)} (${moment(file.mtime).fromNow()})`;
+          fileDescription.innerHTML = ` - <span class='file-size'>${prettyBytes(file.size)}</span>, <span class='file-date'>${moment(file.mtime)} (${moment(file.mtime).fromNow()})</span>`;
         }
         fileItem.appendChild(fileDescription);
         fileList.appendChild(fileItem);
