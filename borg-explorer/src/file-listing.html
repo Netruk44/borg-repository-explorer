@@ -11,10 +11,12 @@
     const { ipcRenderer } = parent.require('electron');
     const moment = parent.require('./lib/moment');
     const prettyBytes = parent.require('./lib/pretty-bytes');
+    const BorgArchiveFileTree = parent.require('./lib/borgArchive');
 
     var currentRepoPath = null;
     var currentRepoPass = null;
-    var currentRepoArchive = null;
+    var currentArchiveName = null;
+    var currentArchive = null;
     var currentNavigationPath = null;
 
     /**************************************************************************
@@ -24,21 +26,18 @@
       document.body.innerHTML = '';
     }
 
-    function navigateArchive(relativePath = '.') {
-      // Navigate to the given path in the repository.
-      // If no path is given, navigate to the root of the repository.
-      //ipcRenderer.send('list-archive', currentRepoPath, currentRepoPass, relativePath);
-      console.log(`Navigating to ${relativePath}`);
-      return; // TODO
+    function navigateArchive(absolutePath) {
+      console.log(`Navigating to ${absolutePath}`);
+      currentNavigationPath = absolutePath;
+      clear();
+      renderCurrentArchivePath();
     }
 
     function openArchive(archiveName) {
       // Open the given archive.
       console.log(`Opening archive ${archiveName}`);
-      currentRepoArchive = archiveName;
-      currentNavigationPath = null; // Get entire archive.
-      //currentNavigationPath = ''; // Get root folder
-      ipcRenderer.send('list-archive', currentRepoPath, currentRepoPass, archiveName, currentNavigationPath);
+      currentArchiveName = archiveName;
+      ipcRenderer.send('list-archive', currentRepoPath, currentRepoPass, archiveName, null /* Get entire archive */);
     }
 
     function openFile(relativePath) {
@@ -58,7 +57,7 @@
       document.body.innerHTML = `<h2>Opening archive ${currentRepoPath}</h1>`;
       ipcRenderer.send('list-repository', currentRepoPath, currentRepoPass);
     }
-
+    
     ipcRenderer.on('list-repository-result', (event, data) => {
       //document.body.innerHTML = `${JSON.stringify(data)}}`;
       clear();
@@ -123,33 +122,23 @@
     });
 
     ipcRenderer.on('list-archive-result', (event, data) => {
-      //document.body.innerHTML = `${JSON.stringify(data)}}`;
       clear();
 
-      /* Data is an object that looks like:
-      [{
-        "type":"d", // d for directory, - for file
-        "mode":"drwxr-xr-x",
-        "user":"danielperry",
-        "group":"staff",
-        "uid":501,
-        "gid":20,
-        "path":"Users/danielperry/Desktop/borg-explorer-repo/backup",
-        "healthy":true,
-        "source":"",
-        "linktarget":"",
-        "flags":0,
-        "mtime":"2022-11-04T00:49:44.110426",
-        "size":0
-      },
-      {...}, ...]*/
+      currentArchive = new BorgArchiveFileTree(data);
+      currentNavigationPath = '';
+      renderCurrentArchivePath();
+    });
+
+    function renderCurrentArchivePath() {
+      var currentPathItem = currentArchive.getItem(currentNavigationPath);
+      var currentPathChildren = currentPathItem.getChildren();
 
       // Create a header with the archive name and current path.
       var archiveMetadata = document.createElement('div');
       archiveMetadata.classList.add('archive-info');
       archiveMetadata.innerHTML = `
-        <h2>Listing for archive "${currentRepoArchive}"</h2>
-        <strong>Current Path:</strong> ${currentNavigationPath}`;
+        <h2>Listing for archive "${currentArchiveName}"</h2>
+        <strong>Current Path:</strong> "${currentNavigationPath}"`;
       document.body.appendChild(archiveMetadata);
 
       // Create a list of files and directories with links to open them.
@@ -157,11 +146,11 @@
       // Links to files will call openFile with the relative path.
       // Next to the links there will be a description using the time the file was modified.
       var fileList = document.createElement('ul');
-      for (var file of data) {
+      for (var file of currentPathChildren) {
         var fileItem = document.createElement('li');
         var fileLink = document.createElement('a');
         fileLink.classList.add('file-link');
-        fileLink.innerHTML = file.path.split('/').pop();
+        fileLink.innerHTML = file.name;
         fileLink.href = '#';
 
         // TODO: Fix all links referencing the final file.
@@ -194,7 +183,7 @@
       }
 
       document.body.appendChild(fileList);
-    });
+    }
 
     const knownFunctions = {
       'open': openRepository,
