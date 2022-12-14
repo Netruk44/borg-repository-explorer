@@ -10,9 +10,11 @@
   <script type="text/javascript">
     const { ipcRenderer } = parent.require('electron');
     const moment = parent.require('./lib/moment');
+    const prettyBytes = parent.require('./lib/pretty-bytes');
 
     var currentRepoPath = null;
     var currentRepoPass = null;
+    var currentRepoArchive = null;
     var currentNavigationPath = null;
 
     /**************************************************************************
@@ -22,11 +24,23 @@
       document.body.innerHTML = '';
     }
 
-    function navigateRepo(relativePath = '.') {
+    function navigateArchive(relativePath = '.') {
       // Navigate to the given path in the repository.
       // If no path is given, navigate to the root of the repository.
       //ipcRenderer.send('list-archive', currentRepoPath, currentRepoPass, relativePath);
       console.log(`Navigating to ${relativePath}`);
+      return; // TODO
+    }
+
+    function openArchive(archiveName) {
+      // Open the given archive.
+      console.log(`Opening archive ${archiveName}`);
+      ipcRenderer.send('list-archive', currentRepoPath, currentRepoPass, archiveName);
+    }
+
+    function openFile(relativePath) {
+      // Open the given file.
+      console.log(`Opening file ${relativePath}`);
       return; // TODO
     }
 
@@ -39,10 +53,10 @@
 
       // Open archive
       document.body.innerHTML = `<h2>Opening archive ${currentRepoPath}</h1>`;
-      ipcRenderer.send('list-archive', currentRepoPath, currentRepoPass);
+      ipcRenderer.send('list-repository', currentRepoPath, currentRepoPass);
     }
 
-    ipcRenderer.on('list-archive-result', (event, data) => {
+    ipcRenderer.on('list-repository-result', (event, data) => {
       //document.body.innerHTML = `${JSON.stringify(data)}}`;
       clear();
 
@@ -66,8 +80,7 @@
           "id": "",
           "location": "",
         }
-      }
-      */
+      }*/
 
       // Create a header with the repository location and ID.
       var repoMetadata = document.createElement('div');
@@ -89,18 +102,88 @@
         archiveLink.innerHTML = archive.archive;
         archiveLink.href = '#';
         archiveLink.addEventListener('click', () => {
-          navigateRepo(archive.archive);
+          openArchive(archive.archive);
         });
         archiveItem.appendChild(archiveLink);
         var archiveDescription = document.createElement('span');
         archiveDescription.classList.add('archive-description');
-        // Use moment to get the relative time from archive completion to now.
-        archiveDescription.innerHTML = ` - ${moment(archive.time).fromNow()}`;
+        // Use moment to show the archive time and display age.
+        archiveDescription.innerHTML = ` - ${moment(archive.time)} (${moment(archive.time).fromNow()})`;
         archiveItem.appendChild(archiveDescription);
         archiveList.appendChild(archiveItem);
       }
 
       document.body.appendChild(archiveList);
+    });
+
+    ipcRenderer.on('list-archive-result', (event, data) => {
+      //document.body.innerHTML = `${JSON.stringify(data)}}`;
+      clear();
+
+      /* Data is an object that looks like:
+      {
+        "type":"d", // d for directory, - for file
+        "mode":"drwxr-xr-x",
+        "user":"danielperry",
+        "group":"staff",
+        "uid":501,
+        "gid":20,
+        "path":"Users/danielperry/Desktop/borg-explorer-repo/backup",
+        "healthy":true,
+        "source":"",
+        "linktarget":"",
+        "flags":0,
+        "mtime":"2022-11-04T00:49:44.110426",
+        "size":0
+      }*/
+
+      // Create a header with the archive name and current path.
+      var archiveMetadata = document.createElement('div');
+      archiveMetadata.classList.add('archive-info');
+      archiveMetadata.innerHTML = `
+        <h2>Listing for archive "${currentRepoArchive}"</h2>
+        <strong>Current Path:</strong> ${currentNavigationPath}`;
+      document.body.appendChild(archiveMetadata);
+
+      // Create a list of files and directories with links to open them.
+      // Links to directories will call navigateArchive with the relative path.
+      // Links to files will call openFile with the relative path.
+      // Next to the links there will be a description using the time the file was modified.
+      var fileList = document.createElement('ul');
+      for (var file of data) {
+        var fileItem = document.createElement('li');
+        var fileLink = document.createElement('a');
+        fileLink.classList.add('file-link');
+        fileLink.innerHTML = file.path.split('/').pop();
+        fileLink.href = '#';
+        if (file.type == 'd') {
+          fileLink.addEventListener('click', () => {
+            navigateArchive(file.path);
+          });
+        }
+        else {
+          fileLink.addEventListener('click', () => {
+            openFile(file.path);
+          });
+        }
+        fileItem.appendChild(fileLink);
+        var fileDescription = document.createElement('span');
+        fileDescription.classList.add('file-description');
+
+        // If the entry is a directory, show modified time and age
+        // If the entry is a file, show size (using prettyBytes), modified time and age.
+        if (file.type == 'd') {
+          fileDescription.innerHTML = ` - ${moment(file.mtime)} (${moment(file.mtime).fromNow()})`;
+        }
+        else {
+          //fileDescription.innerHTML = ` - ${file.size} bytes, ${moment(file.mtime)} (${moment(file.mtime).fromNow()})`;
+          fileDescription.innerHTML = ` - ${prettyBytes(file.size)}, ${moment(file.mtime)} (${moment(file.mtime).fromNow()})`;
+        }
+        fileItem.appendChild(fileDescription);
+        fileList.appendChild(fileItem);
+      }
+
+      document.body.appendChild(fileList);
     });
 
     const knownFunctions = {

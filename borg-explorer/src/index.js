@@ -111,9 +111,16 @@ ipcMain.on('close-listing', (event) => {
   event.sender.close();
 })
 
-ipcMain.on('list-archive', (event, path, passphrase) => {
+ipcMain.on('list-repository', (event, path, passphrase) => {
   borg.getRepositoryArchiveList(path, passphrase)
+    .then(function (output) {
+      event.sender.send('list-repository-result', output);
+    });
+})
+
+ipcMain.on('list-archive', (event, path, passphrase, archive) => {
+  borg.getArchiveFileList(path, passphrase, archive)
     .then(function (output) {
       event.sender.send('list-archive-result', output);
     });
-})
+});

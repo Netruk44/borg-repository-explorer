@@ -33,12 +33,12 @@ class BorgCommandFactory {
       .WithArgs(['info', repoLocation]);
   }
 
-  CreateBorgListCommand(repoLocation, passphrase) {
+  CreateBorgListRepoCommand(repoLocation, passphrase) {
     return this.CreateBaseBorgCommand(passphrase)
       .WithArgs(['list', repoLocation])
   }
 
-  CreateBorgListCommand(repoLocation, passphrase, archiveName) {
+  CreateBorgListArchiveCommand(repoLocation, passphrase, archiveName) {
     return this.CreateBaseBorgCommand(passphrase)
       .WithArgs(['list', repoLocation + '::' + archiveName])
   }
@@ -53,7 +53,7 @@ function checkRepository(repoLocation, repoPassphrase) {
 
 function getRepositoryArchiveList(repoLocation, repoPassphrase) {
   // Run borg list for archive, format output as json
-  const command = borgCommandFactory.CreateBorgListCommand(repoLocation, repoPassphrase)
+  const command = borgCommandFactory.CreateBorgListRepoCommand(repoLocation, repoPassphrase)
       .WithArg('--json');
 
   // Run the command, parse the output, return the structured output.
@@ -62,17 +62,21 @@ function getRepositoryArchiveList(repoLocation, repoPassphrase) {
 
 function getArchiveFileList(repoLocation, repoPassphrase, archiveName) {
   // Run borg list for archive, format output as json-lines
-  const command = borgCommandFactory.CreateBorgListCommand(repoLocation, repoPassphrase, archiveName)
+  const command = borgCommandFactory.CreateBorgListArchiveCommand(repoLocation, repoPassphrase, archiveName)
       .WithArg('--json-lines');
   
   // Because the output isn't valid JSON, we can't use JSON.parse directly.
-  // Encapsulate the output in an array, then parse it.
+  // Instead, manually parse the output into a list of JSON objects.
   return command.Run().then((output) => {
-    return JSON.parse('[' + output + ']');
+    var lines = output.split('\n');
+    lines = lines.filter((line) => line.length > 0);
+    var jsonObjects = lines.map((line) => JSON.parse(line));
+    return jsonObjects;
   });
 }
 
 module.exports = {
   checkRepository: checkRepository,
-  getRepositoryArchiveList: getRepositoryArchiveList
+  getRepositoryArchiveList: getRepositoryArchiveList,
+  getArchiveFileList: getArchiveFileList
 };
