@@ -113,7 +113,8 @@
         var archiveDescription = document.createElement('span');
         archiveDescription.classList.add('archive-description');
         // Use moment to show the archive time and display age.
-        archiveDescription.innerHTML = ` - ${moment(archive.time)} (${moment(archive.time).fromNow()})`;
+        // Format date as "YYYY-MM-DD HH:mm:ss"
+        archiveDescription.innerHTML = ` - <span class='archive-date'>${moment(archive.time).format("YYYY-MM-DD HH:mm:ss")}</span> (${moment(archive.time).fromNow()})`;
         archiveItem.appendChild(archiveDescription);
         archiveList.appendChild(archiveItem);
       }
@@ -180,12 +181,13 @@
 
         // If the entry is a directory, show modified time and age
         // If the entry is a file, show size (using prettyBytes), modified time and age.
+        var mtime_str = moment(file.mtime).format("YYYY-MM-DD HH:mm:ss");
         if (file.type == 'd') {
-          fileDescription.innerHTML = ` - <span class='file-date'>${moment(file.mtime)} (${moment(file.mtime).fromNow()})</span>`;
+          fileDescription.innerHTML = ` - <span class='file-date'>${mtime_str}</span> (${moment(file.mtime).fromNow()})`;
         }
         else {
           //fileDescription.innerHTML = ` - ${file.size} bytes, ${moment(file.mtime)} (${moment(file.mtime).fromNow()})`;
-          fileDescription.innerHTML = ` - <span class='file-size'>${prettyBytes(file.size)}</span>, <span class='file-date'>${moment(file.mtime)} (${moment(file.mtime).fromNow()})</span>`;
+          fileDescription.innerHTML = ` - <span class='file-size'>${prettyBytes(file.size)}</span>, <span class='file-date'>${mtime_str}</span> (${moment(file.mtime).fromNow()})`;
         }
         fileItem.appendChild(fileDescription);
         fileList.appendChild(fileItem);
