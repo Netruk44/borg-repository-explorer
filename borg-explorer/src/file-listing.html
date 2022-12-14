@@ -33,6 +33,15 @@
       renderCurrentArchivePath();
     }
 
+    function navigateArchiveUp() {
+      console.log(`Navigating up from ${currentNavigationPath}`);
+      var pathParts = currentNavigationPath.split('/');
+      pathParts.pop();
+      currentNavigationPath = pathParts.join('/');
+      clear();
+      renderCurrentArchivePath();
+    }
+
     function openArchive(archiveName) {
       // Open the given archive.
       console.log(`Opening archive ${archiveName}`);
@@ -159,7 +168,16 @@
       // Links to files will call openFile with the relative path.
       // Next to the links there will be a description using the time the file was modified.
       var fileList = document.createElement('ul');
-      // TODO: Add a link to go up a directory.
+      // Add a link to go up a directory.
+      if (currentNavigationPath != '') {
+        var upItem = document.createElement('li');
+        var upLink = document.createElement('a');
+        upLink.classList.add('file-link');
+        upLink.innerHTML = '..';
+        upLink.href = `javascript:navigateArchiveUp()`;
+        upItem.appendChild(upLink);
+        fileList.appendChild(upItem);
+      }
 
       for (var file of currentPathChildren) {
         var fileItem = document.createElement('li');
