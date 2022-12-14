@@ -37,6 +37,11 @@ class BorgCommandFactory {
     return this.CreateBaseBorgCommand(passphrase)
       .WithArgs(['list', repoLocation])
   }
+
+  CreateBorgListCommand(repoLocation, passphrase, archiveName) {
+    return this.CreateBaseBorgCommand(passphrase)
+      .WithArgs(['list', repoLocation + '::' + archiveName])
+  }
 }
 
 const borgCommandFactory = new BorgCommandFactory();
@@ -53,6 +58,18 @@ function getRepositoryArchiveList(repoLocation, repoPassphrase) {
 
   // Run the command, parse the output, return the structured output.
   return command.Run().then(JSON.parse);
+}
+
+function getArchiveFileList(repoLocation, repoPassphrase, archiveName) {
+  // Run borg list for archive, format output as json-lines
+  const command = borgCommandFactory.CreateBorgListCommand(repoLocation, repoPassphrase, archiveName)
+      .WithArg('--json-lines');
+  
+  // Because the output isn't valid JSON, we can't use JSON.parse directly.
+  // Encapsulate the output in an array, then parse it.
+  return command.Run().then((output) => {
+    return JSON.parse('[' + output + ']');
+  });
 }
 
 module.exports = {
