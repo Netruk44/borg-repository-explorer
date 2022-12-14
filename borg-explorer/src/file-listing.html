@@ -121,7 +121,7 @@
       clear();
 
       /* Data is an object that looks like:
-      {
+      [{
         "type":"d", // d for directory, - for file
         "mode":"drwxr-xr-x",
         "user":"danielperry",
@@ -135,7 +135,8 @@
         "flags":0,
         "mtime":"2022-11-04T00:49:44.110426",
         "size":0
-      }*/
+      },
+      {...}, ...]*/
 
       // Create a header with the archive name and current path.
       var archiveMetadata = document.createElement('div');
