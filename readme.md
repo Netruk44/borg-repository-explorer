@@ -22,3 +22,4 @@ Still in early development. Nearly no functionality is implemented yet, and usef
 ## Screenshot(s)
 <img src="./images/ss1.png" width=650 />
 <img src="./images/ss2.png" width=650 />
+<img src="./images/ss3.png" width=650 />
