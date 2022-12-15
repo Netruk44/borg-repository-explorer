@@ -43,16 +43,16 @@ a:hover {
   font-weight: normal;
 }
 
-.file-date, .archive-date {
+.file-date, .directory-date, .archive-date {
   font-size: smaller;
   font-weight: bold;
 }
 
-.archive-date {
-  font-weight: bold;
+.archive-entry-link-implicit {
+  font-style: italic;
 }
 
-.file-link-implicit {
+.archive-entry-directory {
   color: #006600;
-  font-style: italic;
+  font-weight: bold;;
 }

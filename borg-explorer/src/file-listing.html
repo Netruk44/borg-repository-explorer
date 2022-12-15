@@ -194,7 +194,8 @@
       if (currentNavigationPath != '') {
         var upItem = document.createElement('li');
         var upLink = document.createElement('a');
-        upLink.classList.add('file-link');
+        upLink.classList.add('archive-entry-link');
+        upLink.classList.add('archive-entry-directory');
         upLink.innerHTML = '..';
         upLink.href = `javascript:navigateArchiveUp()`;
         upItem.appendChild(upLink);
@@ -203,7 +204,8 @@
         // Add a link to go back to the archive list
         var backItem = document.createElement('li');
         var backLink = document.createElement('a');
-        backLink.classList.add('file-link');
+        backLink.classList.add('archive-entry-link');
+        backLink.classList.add('archive-entry-directory');
         backLink.innerHTML = '&lt;Archive List&gt;';
         backLink.href = `javascript:refreshRepository()`;
         backItem.appendChild(backLink);
@@ -215,16 +217,18 @@
         var fileLink = document.createElement('a');
 
         if (file.explicit) {
-          fileLink.classList.add('file-link');
+          fileLink.classList.add('archive-entry-link');
         } else {
-          fileLink.classList.add('file-link-implicit');
+          fileLink.classList.add('archive-entry-link-implicit');
         }
 
         if (file.type == 'd') {
+          fileLink.classList.add('archive-entry-directory');
           fileLink.innerHTML = file.name + '/';
           fileLink.href = `javascript:navigateArchive('${file.path}')`;
         }
         else {
+          fileLink.classList.add('archive-entry-file');
           fileLink.innerHTML = file.name;
           fileLink.href = `javascript:openFile('${file.path}')`;
         }
@@ -238,7 +242,7 @@
           // If the entry is a file, show size (using prettyBytes), modified time and age.
           var mtime_str = moment(file.mtime).format("YYYY-MM-DD HH:mm:ss");
           if (file.type == 'd') {
-            fileDescription.innerHTML = ` - <span class='file-date'>${mtime_str}</span> (${moment(file.mtime).fromNow()})`;
+            fileDescription.innerHTML = ` - <span class='directory-date'>${mtime_str}</span> (${moment(file.mtime).fromNow()})`;
           }
           else {
             //fileDescription.innerHTML = ` - ${file.size} bytes, ${moment(file.mtime)} (${moment(file.mtime).fromNow()})`;
