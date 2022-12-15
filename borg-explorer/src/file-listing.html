@@ -71,9 +71,13 @@
     function openRepository(data) {
       currentRepoPath = data.path;
       currentRepoPass = data.passphrase;
+      refreshRepository();
+    }
 
-      // Open archive
-      document.body.innerHTML = `<h2>Opening archive ${currentRepoPath}</h1>`;
+    function refreshRepository() {
+      // Open repository
+      clear();
+      document.body.innerHTML = `<h2>Opening repository ${currentRepoPath}</h1>`;
       ipcRenderer.send('list-repository', currentRepoPath, currentRepoPass);
     }
     
@@ -182,6 +186,15 @@
         upLink.href = `javascript:navigateArchiveUp()`;
         upItem.appendChild(upLink);
         fileList.appendChild(upItem);
+      } else {
+        // Add a link to go back to the archive list
+        var backItem = document.createElement('li');
+        var backLink = document.createElement('a');
+        backLink.classList.add('file-link');
+        backLink.innerHTML = '&lt;Archive List&gt;';
+        backLink.href = `javascript:refreshRepository()`;
+        backItem.appendChild(backLink);
+        fileList.appendChild(backItem);
       }
 
       for (var file of currentPathChildren) {
