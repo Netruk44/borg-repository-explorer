@@ -38,9 +38,21 @@ class BorgCommandFactory {
       .WithArgs(['list', repoLocation])
   }
 
-  CreateBorgListArchiveCommand(repoLocation, passphrase, archiveName) {
-    return this.CreateBaseBorgCommand(passphrase)
+  CreateBorgListArchiveCommand(repoLocation, passphrase, archiveName, archivePath=null) {
+    var command = this.CreateBaseBorgCommand(passphrase)
       .WithArgs(['list', repoLocation + '::' + archiveName])
+    
+    // If a path was specified, filter output to only files in that path.
+    if (archivePath != null) {
+      // Regex: ^<path>[^/]*$
+      // ^: Start of string
+      // <path>: The path to filter by
+      // [^/]*: Any number of characters that aren't a slash (filter out subdirectories)
+      // $: End of string
+      command.WithArgs(['--pattern', `re:^${archivePath}[^/]*$]`])
+    }
+
+    return command;
   }
 }
 
@@ -62,19 +74,9 @@ function getRepositoryArchiveList(repoLocation, repoPassphrase) {
 
 function getArchiveFileList(repoLocation, repoPassphrase, archiveName, archivePath) {
   // Run borg list for archive, format output as json-lines
-  const command = borgCommandFactory.CreateBorgListArchiveCommand(repoLocation, repoPassphrase, archiveName)
+  const command = borgCommandFactory.CreateBorgListArchiveCommand(repoLocation, repoPassphrase, archiveName, archivePath)
       .WithArg('--json-lines');
-  
-  // If a path was specified, filter output to only files in that path.
-  if (archivePath != null) {
-    // Regex: ^<path>[^/]*$
-    // ^: Start of string
-    // <path>: The path to filter by
-    // [^/]*: Any number of characters that aren't a slash (filter out subdirectories)
-    // $: End of string
-    command.WithArgs(['--pattern', `re:^${archivePath}[^/]*$]`])
-  }
-  
+
   // Because the output isn't valid JSON, we can't use JSON.parse directly.
   // Instead, manually parse the output into a list of JSON objects.
   return command.Run().then((output) => {
@@ -86,12 +88,8 @@ function getArchiveFileList(repoLocation, repoPassphrase, archiveName, archivePa
 }
 
 function getArchiveFileListStream(repoLocation, repoPassphrase, archiveName, archivePath, onOutput, onEnd) {
-  const command = borgCommandFactory.CreateBorgListArchiveCommand(repoLocation, repoPassphrase, archiveName)
+  const command = borgCommandFactory.CreateBorgListArchiveCommand(repoLocation, repoPassphrase, archiveName, archivePath)
       .WithArg('--json-lines');
-
-  if (archivePath != null) {
-    command.WithArgs(['--pattern', `re:^${archivePath}[^/]*$]`])
-  }
 
   return command.RunStream((line) => {
     if (line.length > 0) {
