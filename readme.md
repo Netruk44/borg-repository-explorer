@@ -47,3 +47,4 @@ At some point, figuring out how to start a fresh conversation with ChatGPT (sett
 ## Screenshot(s)
 <img src="./images/ss2.png" width=650 />
 <img src="./images/ss3.png" width=650 />
+<img src="./images/ss4.png" width=650 />
