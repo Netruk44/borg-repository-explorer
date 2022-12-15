@@ -51,3 +51,8 @@ a:hover {
 .archive-date {
   font-weight: bold;
 }
+
+.file-link-implicit {
+  color: #006600;
+  font-style: italic;
+}

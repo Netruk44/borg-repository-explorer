@@ -210,29 +210,39 @@
       for (var file of currentPathChildren) {
         var fileItem = document.createElement('li');
         var fileLink = document.createElement('a');
-        fileLink.classList.add('file-link');
-        fileLink.innerHTML = file.name;
+
+        if (file.explicit) {
+          fileLink.classList.add('file-link');
+        } else {
+          fileLink.classList.add('file-link-implicit');
+        }
+
         if (file.type == 'd') {
+          fileLink.innerHTML = file.name + '/';
           fileLink.href = `javascript:navigateArchive('${file.path}')`;
         }
         else {
+          fileLink.innerHTML = file.name;
           fileLink.href = `javascript:openFile('${file.path}')`;
         }
         fileItem.appendChild(fileLink);
-        var fileDescription = document.createElement('span');
-        fileDescription.classList.add('file-description');
 
-        // If the entry is a directory, show modified time and age
-        // If the entry is a file, show size (using prettyBytes), modified time and age.
-        var mtime_str = moment(file.mtime).format("YYYY-MM-DD HH:mm:ss");
-        if (file.type == 'd') {
-          fileDescription.innerHTML = ` - <span class='file-date'>${mtime_str}</span> (${moment(file.mtime).fromNow()})`;
+        if (file.explicit) {
+          var fileDescription = document.createElement('span');
+          fileDescription.classList.add('file-description');
+
+          // If the entry is a directory, show modified time and age
+          // If the entry is a file, show size (using prettyBytes), modified time and age.
+          var mtime_str = moment(file.mtime).format("YYYY-MM-DD HH:mm:ss");
+          if (file.type == 'd') {
+            fileDescription.innerHTML = ` - <span class='file-date'>${mtime_str}</span> (${moment(file.mtime).fromNow()})`;
+          }
+          else {
+            //fileDescription.innerHTML = ` - ${file.size} bytes, ${moment(file.mtime)} (${moment(file.mtime).fromNow()})`;
+            fileDescription.innerHTML = ` - <span class='file-size'>${prettyBytes(file.size)}</span>, <span class='file-date'>${mtime_str}</span> (${moment(file.mtime).fromNow()})`;
+          }
+          fileItem.appendChild(fileDescription);
         }
-        else {
-          //fileDescription.innerHTML = ` - ${file.size} bytes, ${moment(file.mtime)} (${moment(file.mtime).fromNow()})`;
-          fileDescription.innerHTML = ` - <span class='file-size'>${prettyBytes(file.size)}</span>, <span class='file-date'>${mtime_str}</span> (${moment(file.mtime).fromNow()})`;
-        }
-        fileItem.appendChild(fileDescription);
         fileList.appendChild(fileItem);
       }
 
