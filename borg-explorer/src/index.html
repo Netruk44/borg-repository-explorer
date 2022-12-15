@@ -43,6 +43,10 @@
 
       ipcRenderer.on('error-message', function (event, message) {
         errorMessage.innerHTML = message;
+
+        // Hack: re-enable on error message
+        openButton.disabled = false;
+        openButton.innerHTML = 'Open';
       });
   
       browseButton.addEventListener('click', function () {
