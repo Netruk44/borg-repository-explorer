@@ -62,6 +62,8 @@
         const path = pathInput.value;
         const passphrase = passphraseInput.value;
         ipcRenderer.send('open-database', path, passphrase);
+        openButton.disabled = true;
+        openButton.innerHTML = 'Opening...';
       });
     </script>
   </body>
