@@ -139,6 +139,18 @@ class FileTreeItem {
     for (var key in this.children) {
       children.push(this.children[key]);
     }
+
+    // Sort children, first by type, then by name
+    children.sort(function(a, b) {
+      if (a.type == b.type) {
+        return a.name.localeCompare(b.name);
+      } else if (a.type == 'd') {
+        return -1;
+      } else {
+        return 1;
+      }
+    });
+    
     return children;
   }
 }
