@@ -2,7 +2,7 @@
 
 <img src="./images/ss1.png" width=650 />
 
-This repository contains a personal project, a simple GUI explorer for a Borg repositories.
+This repository contains a personal project, a simple GUI explorer for Borg repositories.
 
 This project is is a **⚠️Work In Progress⚠️**, and it is not guaranteed to be completed or maintained.
 
