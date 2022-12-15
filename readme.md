@@ -40,6 +40,8 @@ Still in early development, functionality is very limited. It's also very "progr
 
 The fun new thing to do is to make ChatGPT build your entire webapp for you. I've never used Electron before, and I have a desire to build a GUI. So, I decided to go ahead and give it a shot.
 
+At some point, figuring out how to start a fresh conversation with ChatGPT (setting up a chat question with the required context to generate the kind of code I was looking for) was too much work, so I switched over to using Copilot instead. 
+
 ## Screenshot(s)
 <img src="./images/ss2.png" width=650 />
 <img src="./images/ss3.png" width=650 />
