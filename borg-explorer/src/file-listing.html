@@ -18,12 +18,14 @@
     var currentArchiveName = null;
     var currentArchive = null;
     var currentNavigationPath = null;
+    var loadedFileCount = null;
 
     /**************************************************************************
      * Local Window Helpers
      **************************************************************************/
     function clear() {
       document.body.innerHTML = '';
+      loadedFileCount = null;
     }
 
     function navigateArchive(absolutePath) {
@@ -53,6 +55,11 @@
 
       // Show a loading message.
       document.body.innerHTML = `<h2>Loading archive ${archiveName}...</h1>`;
+
+      // Show a loaded file count, keep track of the dom element so we can update it.
+      loadedFileCount = document.createElement('h3');
+      loadedFileCount.innerHTML = '0 files loaded';
+      document.body.appendChild(loadedFileCount);
 
       currentArchive = new BorgArchiveFileTree([]);
       currentNavigationPath = '';
@@ -149,6 +156,9 @@
 
     ipcRenderer.on('list-archive-stream-data', (event, data) => {
       currentArchive.addStreamData(data);
+
+      // Update the loaded file count.
+      loadedFileCount.innerHTML = `${currentArchive.getFileCount()} files loaded`;
     });
 
     ipcRenderer.on('list-archive-stream-end', (event) => {

@@ -149,8 +149,10 @@ class BorgArchiveFileTree {
 
   constructor(archiveFileList) {
     this.fileTree = new FileTreeItem({ path: '', type: 'd' }, false);
+    this.fileCount = 0;
     for (var i = 0; i < archiveFileList.length; i++) {
-      this.fileTree.set(archiveFileList[i].path, new FileTreeItem(archiveFileList[i]));
+      //this.fileTree.set(archiveFileList[i].path, new FileTreeItem(archiveFileList[i]));
+      this.addStreamData(archiveFileList[i]);
     }
   }
 
@@ -166,6 +168,11 @@ class BorgArchiveFileTree {
   addStreamData(nextItem) {
     // Add the next item to the file tree
     this.fileTree.set(nextItem.path, new FileTreeItem(nextItem));
+    this.fileCount++;
+  }
+
+  getFileCount() {
+    return this.fileCount;
   }
 }
 
