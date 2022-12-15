@@ -158,7 +158,10 @@
       currentArchive.addStreamData(data);
 
       // Update the loaded file count.
-      loadedFileCount.innerHTML = `${currentArchive.getFileCount()} files loaded`;
+      const curFileCount = currentArchive.getFileCount();
+      if (curFileCount % 1000 == 0) {
+        loadedFileCount.innerHTML = `${curFileCount} files loaded`;
+      }
     });
 
     ipcRenderer.on('list-archive-stream-end', (event) => {
