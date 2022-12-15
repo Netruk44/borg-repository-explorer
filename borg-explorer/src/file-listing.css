@@ -8,7 +8,7 @@ body {
   padding: 0;
 }
 
-.repo-info {
+.repo-info, .archive-info {
   background-color: #ddd;
   border-bottom: 1px solid #333;
   padding: 0.5em;
@@ -40,10 +40,10 @@ a:hover {
 
 .file-size {
   font-size: smaller;
-  font-weight: bold;
+  font-weight: normal;
 }
 
-.file-date {
+.file-date, .archive-date {
   font-size: smaller;
   font-weight: bold;
 }
