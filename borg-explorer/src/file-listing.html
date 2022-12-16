@@ -19,7 +19,7 @@
     var currentArchive = null;
     var currentNavigationPath = null;
     var loadedFileCount = null;
-    var currentlyOpenFile = null;
+    var imagePreviewPath = null;
 
     /**************************************************************************
      * Local Window Helpers
@@ -73,21 +73,19 @@
     function openFile(absolutePath) {
       // Open the given file.
       console.log(`Opening file ${absolutePath}`);
-      currentlyOpenFile = absolutePath;
       
-      // If the file is an image, show it in the current window.
-      var extension = absolutePath.split('.').pop().toLowerCase();
-      if (displayableImageExtensions.includes(extension)) {
-        clear();
+      // Otherwise, open the file in the default application.
+      // TODO
+      //ipcRenderer.send('extract', currentRepoPath, currentRepoPass, currentArchiveName, absolutePath);
+    }
 
-        // Show a loading image message
-        document.body.innerHTML = `<h2>Loading image ${absolutePath}...</h2>`;
-        ipcRenderer.send('extract-display-image', currentRepoPath, currentRepoPass, currentArchiveName, absolutePath);
-      } else {
-        // Otherwise, open the file in the default application.
-        // TODO
-        //ipcRenderer.send('extract', currentRepoPath, currentRepoPass, currentArchiveName, absolutePath);
-      }
+    function previewImage(absolutePath) {
+      clear();
+      imagePreviewPath = absolutePath;
+
+      // Show a loading image message
+      document.body.innerHTML = `<h2>Loading image ${absolutePath}...</h2>`;
+      ipcRenderer.send('extract-display-image', currentRepoPath, currentRepoPass, currentArchiveName, absolutePath);
     }
 
     ipcRenderer.on('extract-display-image-result', (event, image_path) => {
@@ -102,7 +100,7 @@
       var header = document.createElement('div');
       header.classList.add('image-info');
       header.innerHTML = `<h2>Image Preview</h2>
-                          <h3>${currentlyOpenFile}</h3>
+                          <h3>${imagePreviewPath}</h3>
                           <a href="javascript:navigateArchive('${currentNavigationPath}')">Back to archive</a><br />`;
       document.body.appendChild(header);
 
@@ -256,6 +254,9 @@
 
       for (var file of currentPathChildren) {
         var fileItem = document.createElement('li');
+        var fileItemDiv = document.createElement('div');
+        fileItem.appendChild(fileItemDiv);
+
         var fileLink = document.createElement('a');
 
         if (file.explicit) {
@@ -274,7 +275,25 @@
           fileLink.innerHTML = file.name;
           fileLink.href = `javascript:openFile('${file.path}')`;
         }
-        fileItem.appendChild(fileLink);
+        fileItemDiv.appendChild(fileLink);
+
+        // If the file is an image, and it's a renderable image type, show a preview link.
+        if (file.type != 'd') {
+          const ext = file.path.split('.').pop().toLowerCase();
+          //console.log(`Checking if ${ext} is in ${displayableImageExtensions}`);
+
+          // Check if ext is in displayableImageExtensions
+          if (displayableImageExtensions.includes(ext)) {
+            var previewLink = document.createElement('a');
+            previewLink.classList.add('archive-entry-link');
+            previewLink.classList.add('archive-entry-preview');
+            previewLink.innerHTML = '[Preview Image]';
+            previewLink.href = `javascript:previewImage('${file.path}')`;
+            // Add space before link
+            fileItemDiv.appendChild(document.createTextNode(' '));
+            fileItemDiv.appendChild(previewLink);
+          }
+        }
 
         if (file.explicit) {
           var fileDescription = document.createElement('span');
@@ -290,7 +309,7 @@
             //fileDescription.innerHTML = ` - ${file.size} bytes, ${moment(file.mtime)} (${moment(file.mtime).fromNow()})`;
             fileDescription.innerHTML = ` - <span class='file-size'>${prettyBytes(file.size)}</span>, <span class='file-date'>${mtime_str}</span> (${moment(file.mtime).fromNow()})`;
           }
-          fileItem.appendChild(fileDescription);
+          fileItemDiv.appendChild(fileDescription);
         }
         fileList.appendChild(fileItem);
       }

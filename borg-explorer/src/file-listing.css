@@ -60,3 +60,9 @@ a:hover {
 .image-preview {
   padding-top: 1em;
 }
+
+.archive-entry-preview {
+  font-size: smaller;
+  font-weight: bold;
+  color: #006600;
+}
