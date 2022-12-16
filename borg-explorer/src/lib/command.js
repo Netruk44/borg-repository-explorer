@@ -1,5 +1,6 @@
 const { exec, spawn } = require('child_process');
 const { ipcMain } = require('electron');
+const process = require('process');
 
 // Define a Command class that contains a string command to run,
 // environment variables to run the command with, and a list of
@@ -7,10 +8,11 @@ const { ipcMain } = require('electron');
 // pattern, where the user can chain methods to set everything,
 // followed by a call to .Run() to execute the command.
 class Command {
-  constructor(command = '', args = [], env = {}) {
+  constructor(command = '', args = [], env = {}, cwd = null) {
     this.command = command;
     this.args = args;
     this.env = env;
+    this.cwd = cwd;
   }
 
   // Set the command to run.
@@ -49,6 +51,20 @@ class Command {
     return this;
   }
 
+  // Run the command in a specific directory.
+  InDir(dir) {
+    this.cwd = dir;
+    return this;
+  }
+
+  // Get the current working directory.
+  GetCwd() {
+    if (this.cwd == null) {
+      return process.cwd();
+    }
+    return this.cwd;
+  }
+
   // Run the command.
   Run() {
     // Can't access 'this' inside Promise
@@ -69,7 +85,8 @@ class Command {
       const fullCommand = `${parent.command} ${args.join(' ')}`;
 
       const options = {
-        env: parent.env
+        cwd: parent.GetCwd(),
+        env: parent.env,
       }
 
       exec(fullCommand, options, function (error, stdout, stderr) {
@@ -89,6 +106,7 @@ class Command {
 
     return new Promise(function (resolve, reject) {
       const options = {
+        cwd: parent.GetCwd(),
         env: parent.env
       }
 

@@ -55,6 +55,16 @@ app.on('activate', () => {
   }
 });
 
+app.on('quit', () => {
+  // On quit, cleanup temp files
+  try {
+    borg.cleanTempDirectory();
+  } catch (err) {
+    // Pop up alert that temp directory couldn't be cleaned
+    dialog.showErrorBox('Error cleaning temp directory', 'Error cleaning temp directory: ' + err + '\n\nYou may want to manually delete the temp directory: ' + borg.getTempDirectory());
+  }
+});
+
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
 
@@ -136,5 +146,12 @@ ipcMain.on('list-archive-stream', (event, path, passphrase, archive, archivePath
   borg.getArchiveFileListStream(path, passphrase, archive, archivePath, onData, onEnd)
     .catch(function (error) {
       event.sender.send('list-archive-stream-error', error);
+    });
+});
+
+ipcMain.on('extract-display-image', (event, path, passphrase, archive, archivePath) => {
+  borg.extractTempFile(path, passphrase, archive, archivePath)
+    .then(function (output) {
+      event.sender.send('extract-display-image-result', output);
     });
 });

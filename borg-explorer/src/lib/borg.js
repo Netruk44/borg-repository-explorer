@@ -1,4 +1,10 @@
 const { Command } = require('./command');
+const fs = require('fs');
+const path = require('path');
+const os = require('os');
+
+// Use one temp directory for all borg commands.
+var tempDir = null;
 
 // Define a BorgCommandFactory class that contains methods to
 // create commands to run borg commands.
@@ -54,6 +60,16 @@ class BorgCommandFactory {
 
     return command;
   }
+
+  CreateBorgExtractCommand(repoLocation, passphrase, archiveName, archivePath, destinationPath) {
+    return this.CreateBaseBorgCommand(passphrase)
+      .WithArgs([
+        'extract', 
+        repoLocation + '::' + archiveName,
+        archivePath
+      ])
+      .InDir(destinationPath);
+  }
 }
 
 const borgCommandFactory = new BorgCommandFactory();
@@ -98,9 +114,46 @@ function getArchiveFileListStream(repoLocation, repoPassphrase, archiveName, arc
   }, onEnd);
 }
 
+function extractTempFile(repoLocation, repoPassphrase, archiveName, archivePath) {
+  ensureTempDirectoryExists();
+
+  // Extract a file to the temporary directory.
+  var destinationPath = tempDir + '/' + archivePath;
+
+  // If the file already exists, delete it
+  if (fs.existsSync(destinationPath)) {
+    fs.unlinkSync(destinationPath);
+  }
+
+  return borgCommandFactory.CreateBorgExtractCommand(repoLocation, repoPassphrase, archiveName, archivePath, tempDir).Run()
+    .then(() => destinationPath); // Return the path to the extracted file.
+}
+
+function ensureTempDirectoryExists() {
+  if (tempDir == null) {
+    tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'borg-explorer-'));
+    console.log('Created temp directory: ' + tempDir);
+  }
+}
+
+function cleanTempDirectory() {
+  // Delete the temporary directory.
+  if (tempDir != null) {
+    fs.rmSync(tempDir, { recursive: true, force: true });
+    tempDir = null;
+  }
+}
+
+function getTempDirectory() {
+  return tempDir;
+}
+
 module.exports = {
   checkRepository: checkRepository,
   getRepositoryArchiveList: getRepositoryArchiveList,
   getArchiveFileList: getArchiveFileList,
   getArchiveFileListStream: getArchiveFileListStream,
+  extractTempFile: extractTempFile,
+  cleanTempDirectory: cleanTempDirectory,
+  getTempDirectory: getTempDirectory,
 };

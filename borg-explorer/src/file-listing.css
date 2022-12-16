@@ -8,7 +8,7 @@ body {
   padding: 0;
 }
 
-.repo-info, .archive-info {
+.repo-info, .archive-info, .image-info {
   background-color: #ddd;
   border-bottom: 1px solid #333;
   padding: 0.5em;
@@ -54,5 +54,9 @@ a:hover {
 
 .archive-entry-directory {
   color: #006600;
-  font-weight: bold;;
+  font-weight: bold;
+}
+
+.image-preview {
+  padding-top: 1em;
 }

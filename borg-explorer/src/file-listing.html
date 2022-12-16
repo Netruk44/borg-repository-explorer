@@ -19,6 +19,7 @@
     var currentArchive = null;
     var currentNavigationPath = null;
     var loadedFileCount = null;
+    var currentlyOpenFile = null;
 
     /**************************************************************************
      * Local Window Helpers
@@ -66,10 +67,51 @@
       ipcRenderer.send('list-archive-stream', currentRepoPath, currentRepoPass, archiveName, null /* Get entire archive */);
     }
 
-    function openFile(relativePath) {
+    // Image extensions that electron can display natively.
+    const displayableImageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'tiff', 'webp'];
+
+    function openFile(absolutePath) {
       // Open the given file.
-      console.log(`Opening file ${relativePath}`);
-      return; // TODO
+      console.log(`Opening file ${absolutePath}`);
+      currentlyOpenFile = absolutePath;
+      
+      // If the file is an image, show it in the current window.
+      var extension = absolutePath.split('.').pop().toLowerCase();
+      if (displayableImageExtensions.includes(extension)) {
+        clear();
+
+        // Show a loading image message
+        document.body.innerHTML = `<h2>Loading image ${absolutePath}...</h2>`;
+        ipcRenderer.send('extract-display-image', currentRepoPath, currentRepoPass, currentArchiveName, absolutePath);
+      } else {
+        // Otherwise, open the file in the default application.
+        // TODO
+        //ipcRenderer.send('extract', currentRepoPath, currentRepoPass, currentArchiveName, absolutePath);
+      }
+    }
+
+    ipcRenderer.on('extract-display-image-result', (event, image_path) => {
+      displayImage(image_path);
+    });
+
+    function displayImage (image_path) {
+      clear();
+      console.log(`Displaying image ${image_path}`);
+
+      // Create a header with the image path.
+      var header = document.createElement('div');
+      header.classList.add('image-info');
+      header.innerHTML = `<h2>Image Preview</h2>
+                          <h3>${currentlyOpenFile}</h3>
+                          <a href="javascript:navigateArchive('${currentNavigationPath}')">Back to archive</a><br />`;
+      document.body.appendChild(header);
+
+      var imageDiv = document.createElement('div');
+      imageDiv.classList.add('image-preview');
+      var image = document.createElement('img');
+      image.src = image_path;
+      imageDiv.appendChild(image);
+      document.body.appendChild(imageDiv);
     }
 
     /**************************************************************************
