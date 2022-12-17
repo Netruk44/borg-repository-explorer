@@ -57,7 +57,7 @@
       });
       
       ipcRenderer.on('open-dialog-result', function (event, result) {
-        if (result.filePaths) {
+        if (result.filePaths.length > 0) {
           pathInput.value = result.filePaths[0];
         }
       });

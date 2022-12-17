@@ -144,6 +144,11 @@ function cleanTempDirectory() {
   }
 }
 
+function extract(repoLocation, repoPassphrase, archiveName, archivePath, destinationPath) {
+  return borgCommandFactory.CreateBorgExtractCommand(repoLocation, repoPassphrase, archiveName, archivePath, destinationPath).Run()
+  .then(() => destinationPath); // Return the path to the extracted file(s).
+}
+
 function getTempDirectory() {
   return tempDir;
 }
@@ -156,4 +161,5 @@ module.exports = {
   extractTempFile: extractTempFile,
   cleanTempDirectory: cleanTempDirectory,
   getTempDirectory: getTempDirectory,
+  extract: extract,
 };

@@ -10,7 +10,7 @@ This project was created with assistance from [ChatGPT](https://chat.openai.com/
 
 ## Current State
 
-Still in early development, functionality is limited. It's also very much "programmer art" style and likely unintuitive to use. You can blame the AI's for what it looks like, I have no taste for HTML and CSS 😊. The poor UX is definitely my fault, though. 
+Still in development, functionality is rough. It's also very much "programmer art" style and likely unintuitive to use. You can blame the AI's for what it looks like, I have no taste for HTML and CSS 😊. The poor UX is definitely my fault, though. 
 
 ### Implemented
 * Browsing for a repository directory.
@@ -18,9 +18,8 @@ Still in early development, functionality is limited. It's also very much "progr
 * Listing archives contained within a Borg repository.
 * Very rudimentary listing of files contained within an archive.
 * Viewing images contained within an archive.
-
-### Not Implemented
-* Extracting files from an archive.
+* Extracting files and directories from an archive.
+  * Kind of clunky, files are extracted to the full subtree within the archive.
 
 ## Why?
 
@@ -47,13 +46,16 @@ At some point, figuring out how to start a fresh conversation with ChatGPT (sett
 
 ## Screenshot(s)
 <img src="./images/ss2.png" width=650 />
-<p align='center' style='font-size=small;font-style:italic'>Listing of archives within a repository.</p>
+<p align='center'>Listing of archives within a repository.</p>
 
 <img src="./images/ss4.png" width=650 />
-<p align='center' style='font-size=small;font-style:italic'>Loading an archive</p>
+<p align='center'>Loading an archive</p>
 
 <img src="./images/ss3.png" width=650 />
-<p align='center' style='font-size=small;font-style:italic'>Listing of files within an archive.</p>
+<p align='center'>Listing of files within an archive.</p>
 
 <img src="./images/ss5.png" width=650 />
-<p align='center' style='font-size=small;font-style:italic'>Previewing an image within an archive.</p>
+<p align='center'>Previewing an image within an archive.</p>
+
+<img src="./images/ss6.png" width=650 />
+<p align='center'>Extracting a file from an archive.</p>

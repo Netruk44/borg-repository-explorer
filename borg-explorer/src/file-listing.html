@@ -70,13 +70,10 @@
     // Image extensions that electron can display natively.
     const displayableImageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'tiff', 'webp'];
 
-    function openFile(absolutePath) {
-      // Open the given file.
-      console.log(`Opening file ${absolutePath}`);
-      
-      // Otherwise, open the file in the default application.
-      // TODO
-      //ipcRenderer.send('extract', currentRepoPath, currentRepoPass, currentArchiveName, absolutePath);
+    function extractFile(absolutePath) {
+      // Open the extract dialogue for the given file.
+      console.log(`Extracting file ${absolutePath}`);
+      ipcRenderer.send('open-extract-dialogue', currentRepoPath, currentRepoPass, currentArchiveName, absolutePath);
     }
 
     function previewImage(absolutePath) {
@@ -227,7 +224,7 @@
 
       // Create a list of files and directories with links to open them.
       // Links to directories will call navigateArchive with the relative path.
-      // Links to files will call openFile with the relative path.
+      // Links to files will call extractFile with the relative path.
       // Next to the links there will be a description using the time the file was modified.
       var fileList = document.createElement('ul');
       // Add a link to go up a directory.
@@ -273,7 +270,7 @@
         else {
           fileLink.classList.add('archive-entry-file');
           fileLink.innerHTML = file.name;
-          fileLink.href = `javascript:openFile('${file.path}')`;
+          fileLink.href = `javascript:extractFile('${file.path}')`;
         }
         fileItemDiv.appendChild(fileLink);
 

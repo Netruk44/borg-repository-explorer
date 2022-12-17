@@ -89,7 +89,7 @@ ipcMain.on('open-database', (event, database_path, passphrase) => {
       })
       
       listingWindow.loadFile(path.join(__dirname, 'listing.html'));
-      //listingWindow.webContents.openDevTools();
+      listingWindow.webContents.openDevTools();
 
       // Create a BrowserView for the file listing
       /*const listingView = new BrowserView();
@@ -153,5 +153,44 @@ ipcMain.on('extract-display-image', (event, path, passphrase, archive, archivePa
   borg.extractTempFile(path, passphrase, archive, archivePath)
     .then(function (output) {
       event.sender.send('extract-display-image-result', output);
+    });
+});
+
+ipcMain.on('open-extract-dialogue', (event, repoPath, repoPassphrase, archiveName, archivePath) => {
+  // Create a new window with extract.html
+  const extractWindow = new BrowserWindow({
+    width: 600,
+    height: 350,
+    webPreferences: {
+      preload: path.join(__dirname, 'preload.js'),
+      nodeIntegration: true,
+      contextIsolation: false,
+    },
+  })
+
+  extractWindow.loadFile(path.join(__dirname, 'extract.html'));
+  //extractWindow.webContents.openDevTools();
+
+  // Send info
+  extractWindow.webContents.on('did-finish-load', () => {
+    const extractWindowData = {
+      repoPath: repoPath,
+      repoPassphrase: repoPassphrase,
+      archiveName: archiveName,
+      archivePath: archivePath,
+    };
+    extractWindow.webContents.send('set-info', JSON.stringify(extractWindowData));
+  });
+});
+
+ipcMain.on('extract', (event, repoPath, repoPass, archiveName, archivePath, destination) => {
+  borg.extract(repoPath, repoPass, archiveName, archivePath, destination)
+    .then(function () {
+      //event.sender.send('extract-finished');
+      // Close extract window
+      event.sender.close();
+    })
+    .catch(function (error) {
+      event.sender.send('error-message', error);
     });
 });

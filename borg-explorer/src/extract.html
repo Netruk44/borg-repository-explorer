@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Extract archive...</title>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+  </head>
+  <body>
+    <h1>Extract</h1>
+    <div id="error-message" class="error-message"></div>
+    <div class="label">
+      Archive:
+    </div>
+    <div class="flex-container-horiz">
+      <div class="flex-container-item" style="flex-grow:1">
+        <input type="text" id="archive-name" spellcheck="false" />
+      </div>
+    </div>
+    <div class="label">
+      Archive Path:
+    </div>
+    <div class="flex-container-horiz">
+      <div class="flex-container-item" style="flex-grow:1">
+        <input type="text" id="archive-path" spellcheck="false" />
+      </div>
+    </div>
+    <div class="label">
+      Destination Path:
+    </div>
+    <div class="flex-container-horiz">
+      <div class="flex-container-item" style="flex-grow:1">
+        <input type="text" id="destination-path" spellcheck="false" />
+      </div>
+      <div class="flex-container-item" style="flex-grow:0">
+        <button id="browse-button">Browse...</button>
+      </div>
+    </div>
+    <div class="flex-container-horiz">
+      <div class="flex-container-item" style="flex-grow:1">
+        <button id="extract-button">Extract</button>
+      </div>
+    </div>
+    <script type="text/javascript">
+      const { remote, ipcRenderer } = require('electron');
+   
+      var repositoryPath = null;
+      var repositoryPassphrase = null;
+      const archiveName = document.getElementById('archive-name');
+      const archivePath = document.getElementById('archive-path');
+      const destinationPath = document.getElementById('destination-path');
+      const browseButton = document.getElementById('browse-button');
+      const extractButton = document.getElementById('extract-button');
+      const errorMessage = document.getElementById('error-message');
+   
+      ipcRenderer.on('error-message', function (event, message) {
+        errorMessage.innerHTML = message;
+
+        extractButton.disabled = false;
+        extractButton.innerHTML = 'Extract';
+      });
+
+      ipcRenderer.on('set-info', function(event, jsonData) {
+        const data = JSON.parse(jsonData);
+        repositoryPath = data.repoPath;
+        repositoryPassphrase = data.repoPassphrase;
+        archiveName.value = data.archiveName;
+        archivePath.value = data.archivePath;
+      });
+
+      browseButton.addEventListener('click', function () {
+        const options = {
+          properties: ['openDirectory']
+        };
+        ipcRenderer.send('show-open-dialog', options);
+      });
+
+      ipcRenderer.on('open-dialog-result', function (event, result) {
+        if (result.filePaths.length > 0) {
+          destinationPath.value = result.filePaths[0];
+        }
+      });
+
+      extractButton.addEventListener('click', function () {
+        if (archiveName.value.length == 0) {
+          errorMessage.innerHTML = 'Archive name is required';
+          return;
+        }
+        if (archivePath.value.length == 0) {
+          errorMessage.innerHTML = 'Archive path is required';
+          return;
+        }
+        if (destinationPath.value.length == 0) {
+          errorMessage.innerHTML = 'Destination path is required';
+          return;
+        }
+        extractButton.disabled = true;
+        extractButton.innerHTML = 'Extracting...';
+        errorMessage.innerHTML = '';
+        ipcRenderer.send('extract', repositoryPath, repositoryPassphrase, archiveName.value, archivePath.value, destinationPath.value);
+      });
+    </script>
+  </body>
+</html>
