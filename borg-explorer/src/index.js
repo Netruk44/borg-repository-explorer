@@ -89,7 +89,7 @@ ipcMain.on('open-database', (event, database_path, passphrase) => {
       })
       
       listingWindow.loadFile(path.join(__dirname, 'listing.html'));
-      listingWindow.webContents.openDevTools();
+      //listingWindow.webContents.openDevTools();
 
       // Create a BrowserView for the file listing
       /*const listingView = new BrowserView();
