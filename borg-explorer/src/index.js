@@ -84,11 +84,16 @@ app.on('quit', () => {
 
 function getMenu() {
   return [
+    { label: "Borg Explorer", submenu: [
+      { label: "About Borg Explorer", role: "about"},
+      { type: "separator" },
+      { label: "Preferences", accelerator: "Command+,", click: createPreferencesWindow },
+      { type: "separator" },
+      { label: "Quit", accelerator: "Command+Q", click: function() { app.quit() } },
+    ]},
     { label: "File", submenu: [
       { label: "Open Database", accelerator: "Command+O", click: createWindow },
       { label: "Close Window", accelerator: "Command+W", click: function() { BrowserWindow.getFocusedWindow().close() } },
-      { label: "Preferences", accelerator: "Command+,", click: createPreferencesWindow },
-      { label: "Quit", accelerator: "Command+Q", click: function() { app.quit() } },
     ]},
   ]
 }
