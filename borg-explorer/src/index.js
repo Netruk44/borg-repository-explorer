@@ -100,6 +100,15 @@ function getMenu() {
       { type: "separator" },
       { label: "Close Window", accelerator: "Command+W", click: function() { BrowserWindow.getFocusedWindow().close() } },
     ]},
+    { label: "Edit", submenu: [
+      { label: "Undo", accelerator: "Command+Z", role: "undo"},
+      { label: "Redo", accelerator: "Shift+Command+Z", role: "redo"},
+      { type: "separator" },
+      { label: "Cut", accelerator: "Command+X", role: "cut"},
+      { label: "Copy", accelerator: "Command+C", role: "copy"},
+      { label: "Paste", accelerator: "Command+V", role: "paste"},
+      { label: "Select All", accelerator: "Command+A", role: "selectAll"},
+    ]},
   ]
 }
 
