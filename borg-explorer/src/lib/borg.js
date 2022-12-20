@@ -15,7 +15,7 @@ class BorgCommandFactory {
   }
 
   GetRemoteBorgPath() {
-    this.remoteBorgPath = config.getConfigSetting('remote_borg_path');
+    return config.getConfigSetting('remote_borg_path');
   }
 
   CreateBaseBorgCommand(passphrase) {
