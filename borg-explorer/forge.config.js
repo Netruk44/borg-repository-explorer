@@ -21,4 +21,16 @@ module.exports = {
       config: {},
     },
   ],
+  publishers: [
+    {
+      name: '@electron-forge/publisher-github',
+      config: {
+        repository: {
+          owner: 'netruk44',
+          name: 'borg-repository-explorer',
+        },
+        prerelease: true,
+      },
+    },
+  ],
 };
