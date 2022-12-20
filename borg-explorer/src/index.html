@@ -68,6 +68,7 @@
         ipcRenderer.send('open-database', path, passphrase);
         openButton.disabled = true;
         openButton.innerHTML = 'Opening...';
+        ipcRenderer.send('set-config-item', 'last_opened_repository', path);
       });
 
       // When 'return' is pressed on the passphrase input, click the open button.
@@ -76,6 +77,14 @@
           openButton.click();
         }
       });
+
+      ipcRenderer.on('get-config-item-result', function (event, key, value) {
+        if (key === 'last_opened_repository') {
+          pathInput.value = value;
+        }
+      });
+
+      ipcRenderer.send('get-config-item', 'last_opened_repository');
     </script>
   </body>
 </html>

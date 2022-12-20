@@ -245,3 +245,12 @@ ipcMain.on('set-config', (event, newConfig) => {
   config.setConfig(newConfig);
   event.sender.send('set-config-result', config.getConfig());
 });
+
+ipcMain.on('get-config-item', (event, item) => {
+  event.sender.send('get-config-item-result', item, config.getConfigSetting(item));
+});
+
+ipcMain.on('set-config-item', (event, item, value) => {
+  config.setConfigSetting(item, value);
+  event.sender.send('set-config-item-result', item, config.getConfigSetting(item));
+});

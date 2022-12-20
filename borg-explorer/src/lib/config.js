@@ -6,6 +6,7 @@ const default_config = {
   // Default configuration settings
   borg_installation_paths: '/usr/bin:/usr/local/bin:/opt/homebrew/bin',
   remote_borg_path: 'borg',
+  last_opened_repository: '',
 }
 
 var config = null;
@@ -25,6 +26,12 @@ function getConfigSetting(key) {
 function setConfig(newConfig) {
   // Overwrite the config with the new config.
   config = newConfig;
+  writeConfig();
+}
+
+function setConfigSetting(key, value) {
+  // Set a single config setting.
+  config[key] = value;
   writeConfig();
 }
 
@@ -70,4 +77,5 @@ module.exports = {
   getConfig: getConfig,
   getConfigSetting: getConfigSetting,
   setConfig: setConfig,
+  setConfigSetting: setConfigSetting,
 };
