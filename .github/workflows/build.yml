@@ -8,6 +8,11 @@ jobs:
     strategy:
       matrix:
         os: [macos-latest, ubuntu-latest]
+        include:
+          - os: macos-latest
+            platform: darwin
+          - os: ubuntu-latest
+            platform: linux
 
     steps:
       - name: Check out Git repository
@@ -22,6 +27,6 @@ jobs:
         uses: netruk44/electron-forge-distributable-action@main
         with:
           target-maker: "@electron-forge/maker-zip"
-          target-platform: ${{ matrix.os }}
+          target-platform: ${{ matrix.platform }}
           node-installer: "npm"
           working-directory: "./borg-explorer"
