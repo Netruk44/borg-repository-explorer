@@ -5,7 +5,9 @@ on: push
 jobs:
   release:
     runs-on: ${{ matrix.os }}
-
+    defaults:
+      run:
+        working-directory: ./borg-explorer
     strategy:
       matrix:
         os: [macos-latest, ubuntu-latest]
@@ -25,4 +27,3 @@ jobs:
           target-maker: "@electron-forge/maker-zip"
           target-platform: ${{ matrix.os }}
           node-installer: "npm"
-          package-root: "./borg-explorer"
