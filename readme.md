@@ -23,6 +23,9 @@ Still in development, functionality is rough. It's also very much "programmer ar
 * Viewing images contained within an archive.
 * Extracting files and directories from an archive.
   * Kind of clunky, files are extracted to the full subtree within the archive.
+* Very primitive settings menu for setting borg installation path.
+* SSH support
+  * Support for setting '--remote-path' via settings menu.
 
 ## Why?
 
