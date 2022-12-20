@@ -1,10 +1,10 @@
-name: Build/validate
+name: Build/release
 
-# Run when pushing to main
+# Run this script when pushing to a tag that starts with 'v'
 on:
   push:
-    branches:
-      - main
+    tags:
+      - 'v*'
 
 jobs:
   release:
@@ -28,9 +28,10 @@ jobs:
           node-version: 15
 
       - name: Build Electron app
-        uses: netruk44/electron-forge-distributable-action@build-action
+        uses: netruk44/electron-forge-distributable-action@publish-action
         with:
           target-maker: "@electron-forge/maker-zip"
           target-platform: ${{ matrix.platform }}
           node-installer: "npm"
           working-directory: "./borg-explorer"
+          github-token: ${{ secrets.github_token }}
