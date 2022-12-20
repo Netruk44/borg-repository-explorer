@@ -8,6 +8,9 @@ This project is is a **⚠️Work In Progress⚠️**, and it is not guaranteed 
 
 This project was created with assistance from [ChatGPT](https://chat.openai.com/chat) and [Copilot](https://copilot.github.com).
 
+### Download
+You can find download links on the [releases](https://github.com/Netruk44/borg-repository-explorer/releases) page.
+
 ## Current State
 
 Still in development, functionality is rough. It's also very much "programmer art" style and likely unintuitive to use. You can blame the AI's for what it looks like, I have no taste for HTML and CSS 😊. The poor UX is definitely my fault, though. 
