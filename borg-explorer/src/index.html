@@ -69,6 +69,13 @@
         openButton.disabled = true;
         openButton.innerHTML = 'Opening...';
       });
+
+      // When 'return' is pressed on the passphrase input, click the open button.
+      passphraseInput.addEventListener('keyup', function (event) {
+        if (event.keyCode === 13) {
+          openButton.click();
+        }
+      });
     </script>
   </body>
 </html>
