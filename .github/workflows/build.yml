@@ -20,7 +20,7 @@ jobs:
           node-version: 15
 
       - name: Build Electron app
-        uses: electron-forge/distributable-action@main
+        uses: netruk44/electron-forge-distributable-action@main
         with:
           target-maker: "@electron-forge/maker-zip"
           target-platform: ${{ matrix.os }}
