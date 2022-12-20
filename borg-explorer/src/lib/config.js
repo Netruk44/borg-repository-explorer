@@ -31,6 +31,10 @@ function setConfig(newConfig) {
 
 function setConfigSetting(key, value) {
   // Set a single config setting.
+  if (config == null) {
+    readConfig();
+  }
+  
   config[key] = value;
   writeConfig();
 }
