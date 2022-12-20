@@ -5,27 +5,50 @@
     <link rel="stylesheet" type="text/css" href="style.css" />
   </head>
   <body>
-    <div id="config-list">
-      <!-- This is where the configuration options will be added -->
-    </div>
+    <h1>Preferences</h1> 
+    <h2>Settings List</h2>
     <button id="add-button">New Config</button>
     <button id="save-button">Save</button>
     <button id="close-button">Close</button>
+    <div id="message" class="error-message"></div>
+    <div id="config-list">
+      <!-- This is where the configuration options will be added -->
+    </div>
     <script type="text/javascript">
       const { ipcRenderer } = require('electron')
       const addButton = document.getElementById('add-button')
       const saveButton = document.getElementById('save-button')
       const closeButton = document.getElementById('close-button')
 
+      function displayChangesMessage() {
+        const message = document.getElementById('message')
+        message.innerHTML = 'Changes have not been saved'
+      }
+
+      function clearChangesMessage() {
+        const message = document.getElementById('message')
+        message.innerHTML = ''
+      }
+
       function addItem(key, value) {
         const configList = document.getElementById('config-list')
         const newItem = document.createElement('div')
         newItem.classList.add('config-item')
         newItem.innerHTML = `
-          <input type="text" placeholder="Key" value="${key}" />
-          <input type="text" placeholder="Value" value="${value}" />
+          <div class='flex-container-horiz'>
+          <div class='flex-container-item' style='flex-grow:1'><input type="text" placeholder="Key" value="${key}" /></div>
+          <div class='flex-container-item' style='flex-grow:1'><input type="text" placeholder="Value" value="${value}" /></div>
+          <div class='flex-container-item' style='flex-grow:0'><button class="remove-button">🗑</button></div>
+          </div>
         `
+
+        const removeButton = newItem.getElementsByClassName('remove-button')[0];
+        removeButton.addEventListener('click', () => {
+          configList.removeChild(newItem)
+          displayChangesMessage();
+        })
         configList.appendChild(newItem)
+        displayChangesMessage();
       }
 
       addButton.addEventListener('click', () => {
@@ -36,12 +59,23 @@
         // Save the configuration options
         const config = {}
         const configItems = document.getElementsByClassName('config-item')
+
         for (const item of configItems) {
-          const key = item.children[0].value
-          const value = item.children[1].value
+          //const key = item.children[0].value
+          //const value = item.children[1].value
+          const key = item.getElementsByTagName('input')[0].value
+          const value = item.getElementsByTagName('input')[1].value
+
+          // If either the key or value is blank, skip it
+          if (key === '' || value === '') {
+            continue
+          }
+
           config[key] = value
         }
         ipcRenderer.send('set-config', config)
+
+        clearChangesMessage();
       })
 
       closeButton.addEventListener('click', () => {
@@ -63,6 +97,7 @@
         for (const key in config) {
           addItem(key, config[key])
         }
+        clearChangesMessage();
       }
 
       // Send request for configuration options

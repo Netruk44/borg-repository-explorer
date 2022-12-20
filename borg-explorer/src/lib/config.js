@@ -3,7 +3,9 @@ const path = require('path');
 const fs = require('fs');
 
 const default_config = {
-  // TODO: Specify the default configuration here.
+  // Default configuration settings
+  borg_installation_paths: '/usr/bin:/usr/local/bin:/opt/homebrew/bin',
+  remote_borg_path: 'borg',
 }
 
 var config = null;
@@ -11,12 +13,18 @@ var config = null;
 function getConfig() {
   if (config == null) {
     readConfig();
+    validateConfig(); // New versions may need to change the config.
   }
   return config;
 }
 
+function getConfigSetting(key) {
+  return getConfig()[key];
+}
+
 function setConfig(newConfig) {
-  Object.assign(config, newConfig);
+  // Overwrite the config with the new config.
+  config = newConfig;
   writeConfig();
 }
 
@@ -60,5 +68,6 @@ function writeConfig() {
 
 module.exports = {
   getConfig: getConfig,
+  getConfigSetting: getConfigSetting,
   setConfig: setConfig,
 };

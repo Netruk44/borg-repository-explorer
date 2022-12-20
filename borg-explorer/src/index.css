@@ -32,6 +32,10 @@ input[type="submit"]:active, input[type="button"]:active {
   background-color: #006600;
 }
 
-.error-message {
-  color: #ff0000;
+.flex-container-item > input[type="password"], .flex-container-item > input[type="text"] {
+  width: calc(100% - 2em);
+}
+
+.flex-container-item > button {
+  margin-left: 0.5em;
 }

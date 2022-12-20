@@ -55,15 +55,14 @@ h1 {
 .flex-container-item {
   flex: 1;
 }
-
 .flex-container-item > input[type="password"], .flex-container-item > input[type="text"] {
-  width: calc(100% - 2em);
-}
-
-.flex-container-item > button {
-  margin-left: 0.5em;
+  width: 100%;
 }
 
 .label {
   font-weight: bold;
+}
+
+.error-message {
+  color: #ff0000;
 }

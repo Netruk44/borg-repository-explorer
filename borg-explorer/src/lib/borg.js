@@ -1,4 +1,5 @@
 const { Command } = require('./command');
+const config = require('./config');
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
@@ -10,22 +11,16 @@ var tempDir = null;
 // create commands to run borg commands.
 class BorgCommandFactory {
   constructor() {
-    this.defaultBorgInstallationPaths = [
-      '/usr/bin/',          // Linux
-      '/usr/local/bin/',    // Linux alternate
-      '/opt/homebrew/bin/', // MacOS
-    ];
-    this.defaultPathEnvVar = this.defaultBorgInstallationPaths.join(':');
-    this.borgPath = 'borg';
+    this.defaultPathEnvVar = config.getConfigSetting('borg_installation_paths');
   }
 
-  SetRemoteBorgPath(path) {
-    this.borgPath = path;
+  GetRemoteBorgPath() {
+    this.remoteBorgPath = config.getConfigSetting('remote_borg_path');
   }
 
   CreateBaseBorgCommand(passphrase) {
     var cmd = new Command('borg')
-      .WithArgs(['--remote-path', this.borgPath])
+      .WithArgs(['--remote-path', this.GetRemoteBorgPath()])
       .SetEnv({
         BORG_PASSPHRASE: passphrase,
         PATH: this.defaultPathEnvVar
