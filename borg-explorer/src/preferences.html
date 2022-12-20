@@ -1,34 +1,72 @@
 <html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Borg Explorer Preferences</title>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+  </head>
   <body>
     <div id="config-list">
       <!-- This is where the configuration options will be added -->
     </div>
-    <button id="add-button">Add</button>
+    <button id="add-button">New Config</button>
     <button id="save-button">Save</button>
     <button id="close-button">Close</button>
     <script type="text/javascript">
+      const { ipcRenderer } = require('electron')
       const addButton = document.getElementById('add-button')
       const saveButton = document.getElementById('save-button')
       const closeButton = document.getElementById('close-button')
 
-      addButton.addEventListener('click', () => {
+      function addItem(key, value) {
         const configList = document.getElementById('config-list')
         const newItem = document.createElement('div')
+        newItem.classList.add('config-item')
         newItem.innerHTML = `
-          <input type="text" placeholder="Key" />
-          <input type="text" placeholder="Value" />
+          <input type="text" placeholder="Key" value="${key}" />
+          <input type="text" placeholder="Value" value="${value}" />
         `
         configList.appendChild(newItem)
+      }
+
+      addButton.addEventListener('click', () => {
+        addItem('', '')
       })
       
       saveButton.addEventListener('click', () => {
         // Save the configuration options
+        const config = {}
+        const configItems = document.getElementsByClassName('config-item')
+        for (const item of configItems) {
+          const key = item.children[0].value
+          const value = item.children[1].value
+          config[key] = value
+        }
+        ipcRenderer.send('set-config', config)
       })
 
       closeButton.addEventListener('click', () => {
         // Close the window without saving
+        ipcRenderer.send('close-window')
       })
 
+      ipcRenderer.on('get-config-result', (event, config) => {
+        UpdateConfigList(config)
+      })
+
+      ipcRenderer.on('set-config-result', (event, config) => {
+        UpdateConfigList(config)
+      })
+
+      function UpdateConfigList(config) {
+        const configList = document.getElementById('config-list')
+        configList.innerHTML = ''
+        for (const key in config) {
+          addItem(key, config[key])
+        }
+      }
+
+      // Send request for configuration options
+      ipcRenderer.send('get-config')
     </script>
   </body>
 </html>

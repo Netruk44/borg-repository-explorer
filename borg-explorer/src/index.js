@@ -1,6 +1,7 @@
 const { app, BrowserWindow, dialog, ipcMain, BrowserView, Menu } = require('electron');
 const path = require('path');
 const borg = require('./lib/borg');
+const config = require('./lib/config');
 
 var indexIsMostRecentWindowOpened = false;
 
@@ -150,6 +151,10 @@ ipcMain.on('open-database', (event, database_path, passphrase) => {
 })
 
 ipcMain.on('close-listing', (event) => {
+  // TODO: Deprecate for 'close-window'
+  event.sender.close();
+})
+ipcMain.on('close-window', (event) => {
   event.sender.close();
 })
 
@@ -225,4 +230,14 @@ ipcMain.on('extract', (event, repoPath, repoPass, archiveName, archivePath, dest
     .catch(function (error) {
       event.sender.send('error-message', error);
     });
+});
+
+/* Config Functions */
+ipcMain.on('get-config', (event) => {
+  event.sender.send('get-config-result', config.getConfig());
+});
+
+ipcMain.on('set-config', (event, newConfig) => {
+  config.setConfig(newConfig);
+  event.sender.send('set-config-result', config.getConfig());
 });
