@@ -24,10 +24,9 @@ jobs:
           node-version: 15
 
       - name: Build Electron app
-        uses: netruk44/electron-forge-distributable-action@main
+        uses: netruk44/electron-forge-distributable-action@publish-action
         with:
           target-maker: "@electron-forge/maker-zip"
           target-platform: ${{ matrix.platform }}
           node-installer: "npm"
           working-directory: "./borg-explorer"
-          release: true
