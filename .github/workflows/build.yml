@@ -24,3 +24,4 @@ jobs:
         with:
           target-maker: "@electron-forge/maker-zip"
           target-platform: ${{ matrix.os }}
+          node-installer: "npm"
