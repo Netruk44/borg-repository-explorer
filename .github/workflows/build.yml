@@ -25,3 +25,4 @@ jobs:
           target-maker: "@electron-forge/maker-zip"
           target-platform: ${{ matrix.os }}
           node-installer: "npm"
+          package-root: "./borg-explorer"
