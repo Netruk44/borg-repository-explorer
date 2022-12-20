@@ -94,6 +94,10 @@ function getMenu() {
     ]},
     { label: "File", submenu: [
       { label: "Open Database", accelerator: "Command+O", click: createWindow },
+      { type: "separator" },
+      { label: "Copy", accelerator: "Command+C", role: "copy"},
+      { label: "Paste", accelerator: "Command+V", role: "paste"},
+      { type: "separator" },
       { label: "Close Window", accelerator: "Command+W", click: function() { BrowserWindow.getFocusedWindow().close() } },
     ]},
   ]
