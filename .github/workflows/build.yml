@@ -30,4 +30,4 @@ jobs:
           target-platform: ${{ matrix.platform }}
           node-installer: "npm"
           working-directory: "./borg-explorer"
-          github_token: ${{ secrets.github_token }}
+          github-token: ${{ secrets.github_token }}
