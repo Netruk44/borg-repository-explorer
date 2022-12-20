@@ -1,0 +1,34 @@
+<html>
+  <body>
+    <div id="config-list">
+      <!-- This is where the configuration options will be added -->
+    </div>
+    <button id="add-button">Add</button>
+    <button id="save-button">Save</button>
+    <button id="close-button">Close</button>
+    <script type="text/javascript">
+      const addButton = document.getElementById('add-button')
+      const saveButton = document.getElementById('save-button')
+      const closeButton = document.getElementById('close-button')
+
+      addButton.addEventListener('click', () => {
+        const configList = document.getElementById('config-list')
+        const newItem = document.createElement('div')
+        newItem.innerHTML = `
+          <input type="text" placeholder="Key" />
+          <input type="text" placeholder="Value" />
+        `
+        configList.appendChild(newItem)
+      })
+      
+      saveButton.addEventListener('click', () => {
+        // Save the configuration options
+      })
+
+      closeButton.addEventListener('click', () => {
+        // Close the window without saving
+      })
+
+    </script>
+  </body>
+</html>

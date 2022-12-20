@@ -1,4 +1,4 @@
-const { app, BrowserWindow, dialog, ipcMain, BrowserView } = require('electron');
+const { app, BrowserWindow, dialog, ipcMain, BrowserView, Menu } = require('electron');
 const path = require('path');
 const borg = require('./lib/borg');
 
@@ -29,6 +29,20 @@ const createWindow = () => {
 
   indexIsMostRecentWindowOpened = true;
 };
+
+const createPreferencesWindow = () => {
+  const preferencesWindow = new BrowserWindow({
+    width: 600,
+    height: 400,
+    webPreferences: {
+      preload: path.join(__dirname, 'preload.js'),
+      nodeIntegration: true,
+      contextIsolation: false,
+    },
+  });
+  preferencesWindow.loadFile(path.join(__dirname, 'preferences.html'));
+  //preferencesWindow.webContents.openDevTools();
+}
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
@@ -67,6 +81,19 @@ app.on('quit', () => {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
+
+function getMenu() {
+  return [
+    { label: "File", submenu: [
+      { label: "Open Database", accelerator: "Command+O", click: createWindow },
+      { label: "Close Window", accelerator: "Command+W", click: function() { BrowserWindow.getFocusedWindow().close() } },
+      { label: "Preferences", accelerator: "Command+,", click: createPreferencesWindow },
+      { label: "Quit", accelerator: "Command+Q", click: function() { app.quit() } },
+    ]},
+  ]
+}
+
+Menu.setApplicationMenu(Menu.buildFromTemplate(getMenu()));
 
 ipcMain.on('show-open-dialog', function (event, options) {
   dialog.showOpenDialog(options).then(function (filePaths) {
