@@ -12,6 +12,7 @@
     const moment = parent.require('./lib/moment');
     const prettyBytes = parent.require('./lib/pretty-bytes');
     const BorgArchiveFileTree = parent.require('./lib/borgArchive');
+    const fs = parent.require('fs');
 
     var currentRepoPath = null;
     var currentRepoPass = null;
@@ -69,6 +70,7 @@
 
     // Image extensions that electron can display natively.
     const displayableImageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'tiff', 'webp'];
+    const displayableTextExtensions = ['txt', 'md', 'sh']; // Also includes no extension
 
     function extractFile(absolutePath) {
       // Open the extract dialogue for the given file.
@@ -85,8 +87,21 @@
       ipcRenderer.send('extract-display-image', currentRepoPath, currentRepoPass, currentArchiveName, absolutePath);
     }
 
+    function previewText(absolutePath) {
+      clear();
+      imagePreviewPath = absolutePath;
+
+      // Show a loading image message
+      document.body.innerHTML = `<h2>Loading text file ${absolutePath}...</h2>`;
+      ipcRenderer.send('extract-display-text', currentRepoPath, currentRepoPass, currentArchiveName, absolutePath);
+    }
+
     ipcRenderer.on('extract-display-image-result', (event, image_path) => {
       displayImage(image_path);
+    });
+
+    ipcRenderer.on('extract-display-text-result', (event, textfile_path) => {
+      displayText(textfile_path);
     });
 
     function displayImage (image_path) {
@@ -107,6 +122,27 @@
       image.src = image_path;
       imageDiv.appendChild(image);
       document.body.appendChild(imageDiv);
+    }
+
+    function displayText (textfile_path) {
+      clear();
+      console.log(`Displaying text file ${textfile_path}`);
+
+      // Create a header with the image path.
+      var header = document.createElement('div');
+      header.classList.add('image-info');
+      header.innerHTML = `<h2>Text Preview</h2>
+                          <h3>${textfile_path}</h3>
+                          <a href="javascript:navigateArchive('${currentNavigationPath}')">Back to archive</a><br />`;
+      document.body.appendChild(header);
+
+      var textDiv = document.createElement('div');
+      textDiv.classList.add('text-preview');
+      var text = document.createElement('pre');
+      text.innerHTML = fs.readFileSync(textfile_path, 'utf8');
+      text.contentEditable = true;
+      textDiv.appendChild(text);
+      document.body.appendChild(textDiv);
     }
 
     /**************************************************************************
@@ -274,8 +310,13 @@
         }
         fileItemDiv.appendChild(fileLink);
 
-        // If the file is an image, and it's a renderable image type, show a preview link.
+        // If the file isn't a directory, check if we can show a preview link.
         if (file.type != 'd') {
+          const fileName = file.path.split('/').pop();
+          const fileIsDotFile = fileName.startsWith('.');
+          
+          // If the file is a dotfile, there needs to be two dots in the filename to have an extension
+          const fileHasExtension = fileIsDotFile ? fileName.split('.').length > 2 : fileName.split('.').length > 1;
           const ext = file.path.split('.').pop().toLowerCase();
           //console.log(`Checking if ${ext} is in ${displayableImageExtensions}`);
 
@@ -286,6 +327,15 @@
             previewLink.classList.add('archive-entry-preview');
             previewLink.innerHTML = '[Preview Image]';
             previewLink.href = `javascript:previewImage('${file.path}')`;
+            // Add space before link
+            fileItemDiv.appendChild(document.createTextNode(' '));
+            fileItemDiv.appendChild(previewLink);
+          } else if (displayableTextExtensions.includes(ext) || fileHasExtension == false || (fileIsDotFile && !fileHasExtension)) {
+            var previewLink = document.createElement('a');
+            previewLink.classList.add('archive-entry-link');
+            previewLink.classList.add('archive-entry-preview');
+            previewLink.innerHTML = '[Preview Text]';
+            previewLink.href = `javascript:previewText('${file.path}')`;
             // Add space before link
             fileItemDiv.appendChild(document.createTextNode(' '));
             fileItemDiv.appendChild(previewLink);

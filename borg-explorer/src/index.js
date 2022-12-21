@@ -206,6 +206,13 @@ ipcMain.on('extract-display-image', (event, path, passphrase, archive, archivePa
     });
 });
 
+ipcMain.on('extract-display-text', (event, path, passphrase, archive, archivePath) => {
+  borg.extractTempFile(path, passphrase, archive, archivePath)
+    .then(function (output) {
+      event.sender.send('extract-display-text-result', output);
+    });
+});
+
 ipcMain.on('open-extract-dialogue', (event, repoPath, repoPassphrase, archiveName, archivePath) => {
   // Create a new window with extract.html
   const extractWindow = new BrowserWindow({
