@@ -70,7 +70,7 @@
 
     // Image extensions that electron can display natively.
     const displayableImageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'tiff', 'webp'];
-    const displayableTextExtensions = ['txt', 'md', 'sh']; // Also includes no extension
+    const displayableTextExtensions = ['txt', 'md', 'sh', 'html', 'css', 'js', 'cs', 'cpp', 'h', 'c', 'yaml', 'yml', 'json', 'config'];
 
     function extractFile(absolutePath) {
       // Open the extract dialogue for the given file.
@@ -80,7 +80,7 @@
 
     function previewImage(absolutePath) {
       clear();
-      imagePreviewPath = absolutePath;
+      previewPath = absolutePath;
 
       // Show a loading image message
       document.body.innerHTML = `<h2>Loading image ${absolutePath}...</h2>`;
@@ -89,7 +89,7 @@
 
     function previewText(absolutePath) {
       clear();
-      imagePreviewPath = absolutePath;
+      previewPath = absolutePath;
 
       // Show a loading image message
       document.body.innerHTML = `<h2>Loading text file ${absolutePath}...</h2>`;
@@ -112,7 +112,7 @@
       var header = document.createElement('div');
       header.classList.add('image-info');
       header.innerHTML = `<h2>Image Preview</h2>
-                          <h3>${imagePreviewPath}</h3>
+                          <h3>${previewPath}</h3>
                           <a href="javascript:navigateArchive('${currentNavigationPath}')">Back to archive</a><br />`;
       document.body.appendChild(header);
 
@@ -132,7 +132,7 @@
       var header = document.createElement('div');
       header.classList.add('image-info');
       header.innerHTML = `<h2>Text Preview</h2>
-                          <h3>${textfile_path}</h3>
+                          <h3>${previewPath}</h3>
                           <a href="javascript:navigateArchive('${currentNavigationPath}')">Back to archive</a><br />`;
       document.body.appendChild(header);
 

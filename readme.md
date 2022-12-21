@@ -20,7 +20,9 @@ Still in development, functionality is rough. It's also very much "programmer ar
 * Verifying a passphrase is correct for a Borg repository.
 * Listing archives contained within a Borg repository.
 * Very rudimentary listing of files contained within an archive.
-* Viewing images contained within an archive.
+* Previewing archive contents in the explorer
+  * Image previews: `.jpg .png .gif .bmp .tiff .webp`
+  * Text previews: `.txt .md .sh .html .js .cs .cpp .c .h .yml .json, etc.`
 * Extracting files and directories from an archive.
   * Kind of clunky, files are extracted to the full subtree within the archive.
 * Very primitive settings menu for setting borg installation path.
@@ -62,6 +64,9 @@ At some point, figuring out how to start a fresh conversation with ChatGPT (sett
 
 <img src="./images/ss5.png" width=650 />
 <p align='center'>Previewing an image within an archive.</p>
+
+<img src="./images/ss7.png" width=650 />
+<p align='center'>Previewing a text file within an archive.</p>
 
 <img src="./images/ss6.png" width=650 />
 <p align='center'>Extracting a file from an archive.</p>
