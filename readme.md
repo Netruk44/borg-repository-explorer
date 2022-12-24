@@ -31,7 +31,7 @@ Still in development, functionality is rough. It's also very much "programmer ar
 
 ### Known Issues
 * If you move a Borg repository to a new location, `borg` will display a warning to stdout with a prompt to confirm the new location. This will cause Borg Explorer to appear to hang, as it doesn't recognize the prompt.
-  * You can Ctrl-C Borg Explorer to cancel the operation. This will not leave a lock on the repository.
+  * You can simply exit Borg Explorer to cancel the operation. This will not leave a lock on the repository.
   * **Workaround**: Move the repository back to the original location, or delete the repository and re-create it.
   * **Workaround**: Run a borg command (like `borg info`) on the repository from the command line to manually approve the new location.
 
