@@ -10,8 +10,8 @@ var tempDir = null;
 // Define a BorgCommandFactory class that contains methods to
 // create commands to run borg commands.
 class BorgCommandFactory {
-  constructor() {
-    this.defaultPathEnvVar = config.getConfigSetting('borg_installation_paths');
+  GetBorgInstallationPaths() {
+    return config.getConfigSetting('borg_installation_paths');
   }
 
   GetRemoteBorgPath() {
@@ -23,7 +23,7 @@ class BorgCommandFactory {
       .WithArgs(['--remote-path', this.GetRemoteBorgPath()])
       .SetEnv({
         BORG_PASSPHRASE: passphrase,
-        PATH: this.defaultPathEnvVar
+        PATH: GetBorgInstallationPaths(),
       });
 
       return cmd;
