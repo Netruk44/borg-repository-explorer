@@ -23,7 +23,7 @@ class BorgCommandFactory {
       .WithArgs(['--remote-path', this.GetRemoteBorgPath()])
       .SetEnv({
         BORG_PASSPHRASE: passphrase,
-        PATH: GetBorgInstallationPaths(),
+        PATH: this.GetBorgInstallationPaths(),
       });
 
       return cmd;
