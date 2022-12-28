@@ -69,7 +69,7 @@
 
       browseButton.addEventListener('click', function () {
         const options = {
-          properties: ['openDirectory']
+          properties: ['openDirectory', 'createDirectory']
         };
         ipcRenderer.send('show-open-dialog', options);
       });
