@@ -71,7 +71,26 @@ const borgCommandFactory = new BorgCommandFactory();
 
 function checkRepository(repoLocation, repoPassphrase) {
   // Simply run `borg info` on the repository to see if it succeeds.
-  return borgCommandFactory.CreateBorgInfoCommand(repoLocation, repoPassphrase).Run();
+  // Slight complication: Sometimes Borg outputs an error about a moved repository.
+  // Need to use RunStream to see if a warning is printed to stdout. If so, reject the promise.
+  return new Promise((resolve, reject) => {
+    var command = borgCommandFactory.CreateBorgInfoCommand(repoLocation, repoPassphrase);
+
+    var onData = (data) => {
+      // If the data contains a message about the repository being moved, raise an error.
+      const movedMessageNeedle = 'Warning: The repository at location';
+      if (data.includes(movedMessageNeedle)) {
+        reject(new Error('Repository has been moved'));
+      }
+    }
+
+    var onEnd = () => {
+      resolve();
+    }
+
+    command.RunStream(onData, onEnd)
+      .catch((err) => reject(err));
+  });
 }
 
 function getRepositoryArchiveList(repoLocation, repoPassphrase) {
