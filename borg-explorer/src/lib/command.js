@@ -141,6 +141,7 @@ class Command {
       });
 
       child.stderr.on('data', (data) => {
+        child.kill();
         reject('' + data); // Convert to string
       });
     });
