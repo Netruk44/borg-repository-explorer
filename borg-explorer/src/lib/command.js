@@ -141,7 +141,7 @@ class Command {
       });
 
       child.stderr.on('data', (data) => {
-        reject(data);
+        reject('' + data); // Convert to string
       });
     });
   }
