@@ -32,6 +32,7 @@
         <button id="open-button">Open</button>
       </div>
     </div>
+    <label><input type="checkbox" id="allow-moved-repository" onclick="movedCheckboxToggle(this)" /> Ignore moved repository warning</label>
     <script type="text/javascript">
       const { remote, ipcRenderer } = require('electron');
   
@@ -40,6 +41,7 @@
       const browseButton = document.getElementById('browse-button');
       const openButton = document.getElementById('open-button');
       const errorMessage = document.getElementById('error-message');
+      const allowMovedRepository = document.getElementById('allow-moved-repository');
 
       ipcRenderer.on('error-message', function (event, message) {
         errorMessage.innerHTML = message;
@@ -79,12 +81,28 @@
       });
 
       ipcRenderer.on('get-config-item-result', function (event, key, value) {
-        if (key === 'last_opened_repository') {
-          pathInput.value = value;
+        console.log('get-config-item-result', key, value)
+        switch (key) {
+          case 'last_opened_repository':
+            pathInput.value = value;
+            break;
+          case 'ignore_moved_repository_warning':
+            // value can be a string or boolean, if boolean, use it directly, otherwise convert to boolean while ignoring case
+            if (typeof value === 'boolean') {
+              allowMovedRepository.checked = value;
+            } else {
+              allowMovedRepository.checked = value.toLowerCase() === 'true';
+            }
+            break;
         }
       });
 
+      function movedCheckboxToggle(checkbox) {
+        ipcRenderer.send('set-config-item', 'ignore_moved_repository_warning', checkbox.checked);
+      }
+
       ipcRenderer.send('get-config-item', 'last_opened_repository');
+      ipcRenderer.send('get-config-item', 'ignore_moved_repository_warning');
     </script>
   </body>
 </html>

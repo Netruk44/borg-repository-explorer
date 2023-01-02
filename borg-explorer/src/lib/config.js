@@ -7,6 +7,7 @@ const default_config = {
   borg_installation_paths: '/usr/bin:/usr/local/bin:/opt/homebrew/bin',
   remote_borg_path: 'borg',
   last_opened_repository: '',
+  ignore_moved_repository_warning: 'false',
 }
 
 var config = null;

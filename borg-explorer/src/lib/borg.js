@@ -1,4 +1,4 @@
-const { Command } = require('./command');
+const { Command, RESUME_PROCESS, KILL_PROCESS } = require('./command');
 const config = require('./config');
 const fs = require('fs');
 const path = require('path');
@@ -25,6 +25,10 @@ class BorgCommandFactory {
         BORG_PASSPHRASE: passphrase,
         PATH: this.GetBorgInstallationPaths(),
       });
+
+      if (config.getConfigSetting('ignore_moved_repository_warning')) {
+        cmd.WithEnv('BORG_RELOCATED_REPO_ACCESS_IS_OK', 'yes');
+      }
 
       return cmd;
   }
@@ -77,19 +81,34 @@ function checkRepository(repoLocation, repoPassphrase) {
     var command = borgCommandFactory.CreateBorgInfoCommand(repoLocation, repoPassphrase);
 
     var onData = (data) => {
-      // If the data contains a message about the repository being moved, raise an error.
-      const movedMessageNeedle = 'Warning: The repository at location';
-      if (data.includes(movedMessageNeedle)) {
-        reject(new Error('Repository has been moved'));
-      }
+      
     }
 
     var onEnd = () => {
       resolve();
     }
 
-    command.RunStream(onData, onEnd)
-      .catch((err) => reject(err));
+    var onError = (err) => {
+      // If the data contains a message about the repository being moved, raise an error.
+      const movedMessageNeedle = 'Warning: The repository at location';
+      if (err.includes(movedMessageNeedle)) {
+        // If the message also includes the fact that the user has configured the app to ignore this warning, ignore it.
+        const moveApprovedNeedle = 'BORG_RELOCATED_REPO_ACCESS_IS_OK';
+        if (err.includes(moveApprovedNeedle)) {
+          return RESUME_PROCESS; // Ignore the error
+        }
+        // Otherwise, reject the promise.
+        reject(err);
+        return KILL_PROCESS;
+      }
+      else {
+        // Unknown stderr output, let the program continue.
+        return RESUME_PROCESS;
+      }
+    }
+
+    command.RunStream(onData, onEnd, onError)
+      .catch(onError);
   });
 }
 
@@ -121,11 +140,17 @@ function getArchiveFileListStream(repoLocation, repoPassphrase, archiveName, arc
   const command = borgCommandFactory.CreateBorgListArchiveCommand(repoLocation, repoPassphrase, archiveName, archivePath)
       .WithArg('--json-lines');
 
+  onError = (err) => {
+    // On stderr do nothing, just fail out.
+    onEnd();
+    return KILL_PROCESS;
+  }
+
   return command.RunStream((line) => {
     if (line.length > 0) {
       onOutput(JSON.parse(line));
     }
-  }, onEnd);
+  }, onEnd, onError);
 }
 
 function extractTempFile(repoLocation, repoPassphrase, archiveName, archivePath) {

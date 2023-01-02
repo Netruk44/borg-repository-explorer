@@ -2,6 +2,9 @@ const { exec, spawn } = require('child_process');
 const { ipcMain } = require('electron');
 const process = require('process');
 
+const RESUME_PROCESS = 0;
+const KILL_PROCESS = 1;
+
 // Define a Command class that contains a string command to run,
 // environment variables to run the command with, and a list of
 // arguments to pass to the command. Command will follow a builder
@@ -100,7 +103,9 @@ class Command {
   }
 
   // onData is called once per line of output.
-  RunStream(onData, onEnd) {
+  // onEnd is called when the command finishes.
+  // onError is called when stderr is written to. Should return KILL_PROCESS to kill the process, or RESUME_PROCESS to continue.
+  RunStream(onData, onEnd, onError) {
     // Can't access 'this' inside Promise
     const parent = this;
 
@@ -141,13 +146,18 @@ class Command {
       });
 
       child.stderr.on('data', (data) => {
-        child.kill();
-        reject('' + data); // Convert to string
+        const strData = '' + data; // Convert to string
+        if (onError(strData) == KILL_PROCESS) {
+          child.kill();
+          reject();
+        }
       });
     });
   }
 }
 
 module.exports = {
-  Command: Command
+  Command: Command,
+  RESUME_PROCESS: RESUME_PROCESS,
+  KILL_PROCESS: KILL_PROCESS,
 };
