@@ -34,13 +34,13 @@ Still in development, functionality is rough. It's also very much "programmer ar
 
 * I use Borg to backup my machines and have started using it to manage my old computer backup archives.
 * Sometimes, I like to browse these archives for files and extract them for interest/nostalgia's sake.
-* My current main machine is an M1 MacBook Pro.
-* MacOS cannot easily mount FUSE filesystems, so I have no easy way to browse these archives directly from my Mac.
-  * That's not to say FUSE doesn't work on Mac. It does, but there's hassle involved.
-  * Hassle which you need to repeat after every major system update, it appears!
+* My current main machine is a MacBook Pro.
+* Apple devices cannot easily mount FUSE filesystems, so I have no easy way to browse these archives directly from my Mac.
+  * That's not to say FUSE doesn't work on Mac, it does. But, it's not as easy as it is on Linux.
+  * Enabling system extensions like FUSE require you to modify startup security settings.
 * My current options for browsing an archive are:
   * Install FUSE on Mac to mount the repository
-    * I don't want to have to repeat installation after every update. (I still haven't updated to Ventura yet, either!)
+    * I currently have no other use for FUSE on my Mac, so it would be nice if I could avoid going through the process of installing it.
   * Mount the repository on a remote machine and do some ssh magic to mount it locally to browse it with Finder.
     * Probably doable, but seems convoluted.
     * I can run borg on my Mac locally. Why do I have to involve another machine for this?
