@@ -102,8 +102,9 @@ function checkRepository(repoLocation, repoPassphrase) {
         return KILL_PROCESS;
       }
       else {
-        // Unknown stderr output, let the program continue.
-        return RESUME_PROCESS;
+        // Unknown stderr output, display it.
+        reject(err);
+        return KILL_PROCESS;
       }
     }
 
