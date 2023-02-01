@@ -4,7 +4,7 @@
 
 This repository contains a personal project, a simple GUI explorer for Borg repositories.
 
-This project is is a **⚠️Work In Progress⚠️**, and it is not guaranteed to be completed or maintained.
+This project is is a **⚠️Work In Progress⚠️**, and comes with no guarantees, this project may not be maintained indefinitely.
 
 This project was created with assistance from [ChatGPT](https://chat.openai.com/chat) and [Copilot](https://copilot.github.com).
 
