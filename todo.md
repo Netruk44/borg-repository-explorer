@@ -3,6 +3,7 @@
 - [ ] **File Explorer**: Table-based layout
 - [ ] **File Explorer**: Sort by any header column (Name, Size, Modified Date)
 - [ ] Add a way to cancel loading an archive or check a repository.
+- [ ] Refresh "open repository" panel when config window is saved to account for user config changes.
 
 ## Completed
 ### v0.0.4
