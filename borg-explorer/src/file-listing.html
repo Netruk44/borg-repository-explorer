@@ -2,7 +2,6 @@
 <html>
   <head>
     <title>Borg Repository Listing</title>
-    <!--<link rel="stylesheet" type="text/css" href="style.css">-->
     <link rel="stylesheet" type="text/css" href="file-listing.css">
   </head>
   <body>
@@ -28,6 +27,10 @@
     function clear() {
       document.body.innerHTML = '';
       loadedFileCount = null;
+    }
+
+    function closeRepository() {
+      ipcRenderer.send('close-listing')
     }
 
     function navigateArchive(absolutePath) {
@@ -162,7 +165,6 @@
     }
     
     ipcRenderer.on('list-repository-result', (event, data) => {
-      //document.body.innerHTML = `${JSON.stringify(data)}}`;
       clear();
 
       /* Data is an object that looks like:
@@ -193,7 +195,9 @@
       repoMetadata.innerHTML = `
         <h2>Listing for repository "${data.repository.location.split('/').pop()}"</h2>
         <strong>Repository ID:</strong> ${data.repository.id}<br>
-        <strong>Location:</strong> ${data.repository.location}`;
+        <strong>Location:</strong> ${data.repository.location}<br><br>
+
+        <a href="javascript:closeRepository()" class="close-link">← Close Repository</a><br>`;
       document.body.appendChild(repoMetadata);
 
       // Create a list of archives with links to open them.
@@ -255,7 +259,9 @@
       archiveMetadata.classList.add('archive-info');
       archiveMetadata.innerHTML = `
         <h2>Listing for archive "${currentArchiveName}"</h2>
-        <strong>Current Path:</strong> "${currentNavigationPath}"`;
+        <strong>Current Path:</strong> "${currentNavigationPath}"<br><br>
+        
+        <a href="javascript:closeRepository()" class="close-link">← Close Repository</a><br>`;
       document.body.appendChild(archiveMetadata);
 
       // Create a list of files and directories with links to open them.
@@ -269,7 +275,7 @@
         var upLink = document.createElement('a');
         upLink.classList.add('archive-entry-link');
         upLink.classList.add('archive-entry-directory');
-        upLink.innerHTML = '..';
+        upLink.innerHTML = '⬆ Navigate Up';
         upLink.href = `javascript:navigateArchiveUp()`;
         upItem.appendChild(upLink);
         fileList.appendChild(upItem);
@@ -279,7 +285,7 @@
         var backLink = document.createElement('a');
         backLink.classList.add('archive-entry-link');
         backLink.classList.add('archive-entry-directory');
-        backLink.innerHTML = '&lt;Archive List&gt;';
+        backLink.innerHTML = '⬅ Back to Archive List';
         backLink.href = `javascript:refreshRepository()`;
         backItem.appendChild(backLink);
         fileList.appendChild(backItem);
