@@ -2,6 +2,7 @@
 
 - [ ] **File Explorer**: Table-based layout
 - [ ] **File Explorer**: Sort by any header column (Name, Size, Modified Date)
+- [ ] Add a way to cancel loading an archive or check a repository.
 
 ## Completed
 ### v0.0.4
