@@ -197,7 +197,7 @@
         <strong>Repository ID:</strong> ${data.repository.id}<br>
         <strong>Location:</strong> ${data.repository.location}<br><br>
 
-        <a href="javascript:closeRepository()" class="close-link">← Close Repository</a><br>`;
+        <a href="javascript:closeRepository()" class="close-link">↩ Open a new repository</a>`;
       document.body.appendChild(repoMetadata);
 
       // Create a list of archives with links to open them.
@@ -261,7 +261,8 @@
         <h2>Listing for archive "${currentArchiveName}"</h2>
         <strong>Current Path:</strong> "${currentNavigationPath}"<br><br>
         
-        <a href="javascript:closeRepository()" class="close-link">← Close Repository</a><br>`;
+        <a href="javascript:closeRepository()" class="close-link">↩ Open a new repository</a><br>
+        <a href="javascript:refreshRepository()" class="close-link">⬅ Close ${currentArchiveName}</a>`;
       document.body.appendChild(archiveMetadata);
 
       // Create a list of files and directories with links to open them.
