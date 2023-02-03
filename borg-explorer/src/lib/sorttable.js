@@ -106,7 +106,7 @@ sorttable = {
             sorttable.reverse(this.sorttable_tbody);
             this.className = this.className.replace('sorttable_sorted',
                                                     'sorttable_sorted_reverse');
-            this.removeChild(document.getElementById('sorttable_sortfwdind'));
+            this.removeChild(this.ownerDocument.getElementById('sorttable_sortfwdind'))
             sortrevind = document.createElement('span');
             sortrevind.id = "sorttable_sortrevind";
             sortrevind.innerHTML = stIsIE ? '&nbsp<font face="webdings">5</font>' : '&nbsp;&#x25B4;';
@@ -119,7 +119,7 @@ sorttable = {
             sorttable.reverse(this.sorttable_tbody);
             this.className = this.className.replace('sorttable_sorted_reverse',
                                                     'sorttable_sorted');
-            this.removeChild(document.getElementById('sorttable_sortrevind'));
+            this.removeChild(this.ownerDocument.getElementById('sorttable_sortrevind'));
             sortfwdind = document.createElement('span');
             sortfwdind.id = "sorttable_sortfwdind";
             sortfwdind.innerHTML = stIsIE ? '&nbsp<font face="webdings">6</font>' : '&nbsp;&#x25BE;';
@@ -283,6 +283,24 @@ sorttable = {
     return 1;
     */
   },
+  sort_prettybytes: function(a,b) {
+    aa = parseFloat(a[0].replace(/[^0-9.-]/g,''));
+    ab = a[0].replace(/[^A-Za-z]/g,'');
+    bb = parseFloat(b[0].replace(/[^0-9.-]/g,''));
+    ba = b[0].replace(/[^A-Za-z]/g,'');
+    
+    if (ab == 'kB') aa *= 1024;
+    if (ab == 'MB') aa *= 1024*1024;
+    if (ab == 'GB') aa *= 1024*1024*1024;
+    if (ab == 'TB') aa *= 1024*1024*1024*1024;
+
+    if (ba == 'kB') bb *= 1024;
+    if (ba == 'MB') bb *= 1024*1024;
+    if (ba == 'GB') bb *= 1024*1024*1024;
+    if (ba == 'TB') bb *= 1024*1024*1024*1024;
+    return bb-aa;
+  },
+
   sort_ddmm: function(a,b) {
     mtch = a[0].match(sorttable.DATE_RE);
     y = mtch[3]; m = mtch[2]; d = mtch[1];
@@ -507,3 +525,4 @@ var forEach = function(object, block, context) {
 	}
 };
 
+module.exports = sorttable;

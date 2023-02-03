@@ -13,6 +13,9 @@
     const BorgArchiveFileTree = parent.require('./lib/borgArchive');
     const fs = parent.require('fs');
 
+    const sorttable = parent.require('./lib/sorttable');
+    sorttable.init();
+
     var currentRepoPath = null;
     var currentRepoPass = null;
     var currentArchiveName = null;
@@ -293,6 +296,7 @@
       //document.body.appendChild(fileList);
 
       var fileTable = generateFileTable(currentPathChildren, currentNavigationPath);
+      sorttable.makeSortable(fileTable);
       document.body.appendChild(fileTable);
     }
 
@@ -389,6 +393,7 @@
       // Next to the links there will be a description using the time the file was modified.
       var fileList = document.createElement('table');
       fileList.classList.add('file-listing-table');
+      fileList.classList.add('sortable')
 
       // Header
       // Name, Preview, Size, Modified, Modified(text)
@@ -398,12 +403,15 @@
       fileListHeaderName.innerHTML = 'Name';
       var fileListHeaderPreview = document.createElement('th');
       fileListHeaderPreview.innerHTML = 'Preview';
+      fileListHeaderPreview.classList.add('sorttable_nosort');
       var fileListHeaderSize = document.createElement('th');
       fileListHeaderSize.innerHTML = 'Size';
+      fileListHeaderSize.classList.add('sorttable_prettybytes');
       var fileListHeaderModified = document.createElement('th');
       fileListHeaderModified.innerHTML = 'Modified';
       var fileListHeaderModifiedText = document.createElement('th');
       fileListHeaderModifiedText.innerHTML = '';
+      fileListHeaderModifiedText.classList.add('sorttable_nosort');
       fileListHeaderRow.appendChild(fileListHeaderName);
       fileListHeaderRow.appendChild(fileListHeaderPreview);
       fileListHeaderRow.appendChild(fileListHeaderSize);
