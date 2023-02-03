@@ -265,11 +265,7 @@
         <a href="javascript:refreshRepository()" class="close-link">← Close "${currentArchiveName}"</a>`;
       document.body.appendChild(archiveMetadata);
 
-      // Create a list of files and directories with links to open them.
-      // Links to directories will call navigateArchive with the relative path.
-      // Links to files will call extractFile with the relative path.
-      // Next to the links there will be a description using the time the file was modified.
-      var fileList = document.createElement('ul');
+      var navList = document.createElement('ul');
       // Add a link to go up a directory.
       if (currentNavigationPath != '') {
         var upItem = document.createElement('li');
@@ -279,7 +275,7 @@
         upLink.innerHTML = '⬆ Navigate Up';
         upLink.href = `javascript:navigateArchiveUp()`;
         upItem.appendChild(upLink);
-        fileList.appendChild(upItem);
+        navList.appendChild(upItem);
       } else {
         // Add a link to go back to the archive list
         var backItem = document.createElement('li');
@@ -289,8 +285,23 @@
         backLink.innerHTML = '⬅ Back to Archive List';
         backLink.href = `javascript:refreshRepository()`;
         backItem.appendChild(backLink);
-        fileList.appendChild(backItem);
+        navList.appendChild(backItem);
       }
+      document.body.appendChild(navList);
+
+      //var fileList = generateFileList(currentPathChildren, currentNavigationPath);
+      //document.body.appendChild(fileList);
+
+      var fileTable = generateFileTable(currentPathChildren, currentNavigationPath);
+      document.body.appendChild(fileTable);
+    }
+
+    function generateFileList(currentPathChildren, currentNavigationPath) {
+      // Create a list of files and directories with links to open them.
+      // Links to directories will call navigateArchive with the relative path.
+      // Links to files will call extractFile with the relative path.
+      // Next to the links there will be a description using the time the file was modified.
+      var fileList = document.createElement('ul');
 
       for (var file of currentPathChildren) {
         var fileItem = document.createElement('li');
@@ -368,7 +379,115 @@
         fileList.appendChild(fileItem);
       }
 
-      document.body.appendChild(fileList);
+      return fileList;
+    }
+
+    function generateFileTable(currentPathChildren) {
+      // Generate a table of files and directories.
+      // Links to directories will call navigateArchive with the relative path.
+      // Links to files will call extractFile with the relative path.
+      // Next to the links there will be a description using the time the file was modified.
+      var fileList = document.createElement('table');
+      fileList.classList.add('file-listing-table');
+
+      // Header
+      // Name, Preview, Size, Modified, Modified(text)
+      var fileListHeader = document.createElement('thead');
+      var fileListHeaderRow = document.createElement('tr');
+      var fileListHeaderName = document.createElement('th');
+      fileListHeaderName.innerHTML = 'Name';
+      var fileListHeaderPreview = document.createElement('th');
+      fileListHeaderPreview.innerHTML = 'Preview';
+      var fileListHeaderSize = document.createElement('th');
+      fileListHeaderSize.innerHTML = 'Size';
+      var fileListHeaderModified = document.createElement('th');
+      fileListHeaderModified.innerHTML = 'Modified';
+      var fileListHeaderModifiedText = document.createElement('th');
+      fileListHeaderModifiedText.innerHTML = '';
+      fileListHeaderRow.appendChild(fileListHeaderName);
+      fileListHeaderRow.appendChild(fileListHeaderPreview);
+      fileListHeaderRow.appendChild(fileListHeaderSize);
+      fileListHeaderRow.appendChild(fileListHeaderModified);
+      fileListHeaderRow.appendChild(fileListHeaderModifiedText);
+      fileListHeader.appendChild(fileListHeaderRow);
+      fileList.appendChild(fileListHeader);
+
+      var fileListBody = document.createElement('tbody');
+      for (var file of currentPathChildren) {
+        var fileItem = document.createElement('tr');
+        var fileItemName = document.createElement('td');
+        var fileItemPreview = document.createElement('td');
+        var fileItemSize = document.createElement('td');
+        var fileItemModified = document.createElement('td');
+        var fileItemModifiedText = document.createElement('td');
+
+        fileItemPreview.innerHTML = '-';
+        fileItemSize.innerHTML = '-';
+
+        fileItemModified.innerHTML = moment(file.mtime).format("YYYY-MM-DD HH:mm:ss");
+        fileItemModifiedText.innerHTML = moment(file.mtime).fromNow();
+
+        if (file.type == 'd') {
+          var fileLink = document.createElement('a');
+          if (file.explicit) {
+            fileLink.classList.add('archive-entry-link');
+          } else {
+            fileLink.classList.add('archive-entry-link-implicit');
+          }
+          fileLink.classList.add('archive-entry-directory');
+          fileLink.innerHTML = file.name;
+          fileLink.href = `javascript:navigateArchive('${file.path}')`;
+          fileItemName.appendChild(fileLink);
+        }
+        else {
+          var fileLink = document.createElement('a');
+          if (file.explicit) {
+            fileLink.classList.add('archive-entry-link');
+          } else {
+            fileLink.classList.add('archive-entry-link-implicit');
+          }
+          fileLink.classList.add('archive-entry-file');
+          fileLink.innerHTML = file.name;
+          fileLink.href = `javascript:extractFile('${file.path}')`;
+          fileItemName.appendChild(fileLink);
+          fileItemSize.innerHTML = prettyBytes(file.size);
+
+          // If we can preview the file, add a link to do so.
+          const fileName = file.path.split('/').pop();
+          const fileIsDotFile = fileName.startsWith('.');
+          
+          // If the file is a dotfile, there needs to be two dots in the filename to have an extension
+          const fileHasExtension = fileIsDotFile ? fileName.split('.').length > 2 : fileName.split('.').length > 1;
+          const ext = file.path.split('.').pop().toLowerCase();
+
+          if (displayableImageExtensions.includes(ext)) {
+            var filePreviewLink = document.createElement('a');
+            filePreviewLink.classList.add('archive-entry-link');
+            filePreviewLink.classList.add('archive-entry-preview');
+            filePreviewLink.innerHTML = 'Preview Image';
+            filePreviewLink.href = `javascript:previewImage('${file.path}')`;
+            fileItemPreview.innerHTML = '';
+            fileItemPreview.appendChild(filePreviewLink);
+          } else if (displayableTextExtensions.includes(ext) || !fileHasExtension || (fileIsDotFile && !fileHasExtension)) {
+            var filePreviewLink = document.createElement('a');
+            filePreviewLink.classList.add('archive-entry-link');
+            filePreviewLink.classList.add('archive-entry-preview');
+            filePreviewLink.innerHTML = 'Preview Text';
+            filePreviewLink.href = `javascript:previewText('${file.path}')`;
+            fileItemPreview.innerHTML = '';
+            fileItemPreview.appendChild(filePreviewLink);
+          }
+        }
+        fileItem.appendChild(fileItemName);
+        fileItem.appendChild(fileItemPreview);
+        fileItem.appendChild(fileItemSize);
+        fileItem.appendChild(fileItemModified);
+        fileItem.appendChild(fileItemModifiedText);
+        fileListBody.appendChild(fileItem);
+      }
+
+      fileList.appendChild(fileListBody);
+      return fileList;
     }
 
     const knownFunctions = {
