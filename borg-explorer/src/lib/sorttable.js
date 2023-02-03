@@ -23,6 +23,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   This basically means: do what you want with it.
 */
 
+// Modifications:
+// Added sort_prettybytes
+
 /* jshint -W051, -W083, -W027 */
 
 var stIsIE = /*@cc_on!@*/false;
