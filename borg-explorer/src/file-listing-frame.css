@@ -42,12 +42,33 @@ a:hover {
   color: #666;
 }
 
-.file-size {
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 95%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+th {
+  background-color: rgb(125, 186, 125);
+  border-bottom: 1px solid #333;
+  font-weight: bold;
+  padding: 0.5em;
+  text-align: left;
+}
+
+td {
+  border-bottom: 1px solid #ddd;
+  padding: 0.1em;
+}
+
+.file-size, tbody>tr>:nth-child(3) {
   font-size: smaller;
   font-weight: normal;
 }
 
-.file-date, .directory-date, .archive-date {
+.file-date, .directory-date, .archive-date, tbody>tr>:nth-child(5) {
   font-size: smaller;
   font-weight: bold;
 }
