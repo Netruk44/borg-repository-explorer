@@ -443,7 +443,7 @@
             fileLink.classList.add('archive-entry-link-implicit');
           }
           fileLink.classList.add('archive-entry-directory');
-          fileLink.innerHTML = file.name;
+          fileLink.innerHTML = `${file.name}/`;
           fileLink.href = `javascript:navigateArchive('${file.path}')`;
           fileItemName.appendChild(fileLink);
         }
