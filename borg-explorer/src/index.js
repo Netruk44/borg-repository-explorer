@@ -134,7 +134,7 @@ ipcMain.on('open-database', (event, database_path, passphrase) => {
         },
       })
       
-      listingWindow.loadFile(path.join(__dirname, 'listing.html'));
+      listingWindow.loadFile(path.join(__dirname, 'archive-listing-window.html'));
       //listingWindow.webContents.openDevTools();
 
       // Create a BrowserView for the file listing
@@ -142,7 +142,7 @@ ipcMain.on('open-database', (event, database_path, passphrase) => {
       listingWindow.setBrowserView(listingView);
       listingView.setBounds({ x: 0, y: 150, width: 700, height: 400});
       listingView.setAutoResize({ width: true, height: true })
-      listingView.webContents.loadFile(path.join(__dirname, 'file-listing.html'));*/
+      listingView.webContents.loadFile(path.join(__dirname, 'file-archive-listing-window.html'));*/
 
       // Send archive path and passphrase
       listingWindow.webContents.on('did-finish-load', () => {
