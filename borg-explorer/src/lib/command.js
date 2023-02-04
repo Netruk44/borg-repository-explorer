@@ -5,12 +5,14 @@ const process = require('process');
 const RESUME_PROCESS = 0;
 const KILL_PROCESS = 1;
 
-// Define a Command class that contains a string command to run,
-// environment variables to run the command with, and a list of
-// arguments to pass to the command. Command will follow a builder
-// pattern, where the user can chain methods to set everything,
-// followed by a call to .Run() to execute the command.
+// A class for running commands by easily building up a command string.
+// Build the command with the methods, then call Run() to execute the
+// command, which returns a Promise that resolves with the output of the
+// command when it completes. Use RunStream() to get the output as it
+// happens.
 class Command {
+  // Note: Changes are done in-place, not by returning a new object.
+
   constructor(command = '', args = [], env = {}, cwd = null) {
     this.command = command;
     this.args = args;
