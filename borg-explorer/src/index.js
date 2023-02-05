@@ -163,10 +163,6 @@ ipcMain.on('open-database', (event, database_path, passphrase) => {
     });
 })
 
-ipcMain.on('close-listing', (event) => {
-  // TODO: Deprecate for 'close-window'
-  event.sender.close();
-})
 ipcMain.on('close-window', (event) => {
   event.sender.close();
 })
