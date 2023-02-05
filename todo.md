@@ -4,6 +4,7 @@
 - [ ] Show navigation topbar when loading an archive
 - [ ] Refresh "open repository" panel when config window is saved to account for user config changes.
 - [ ] Calculate directory size
+- [ ] Add navigation/location text box to manually enter a directory to navigate to.
 
 ## Completed
 ### v0.0.6
