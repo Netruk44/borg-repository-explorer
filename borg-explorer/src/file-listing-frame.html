@@ -398,25 +398,32 @@
       // Header
       // Name, Preview, Size, Modified, Modified(text)
       var fileListHeader = document.createElement('thead');
+
       var fileListHeaderRow = document.createElement('tr');
+
       var fileListHeaderName = document.createElement('th');
       fileListHeaderName.innerHTML = 'Name';
+      fileListHeaderRow.appendChild(fileListHeaderName);
+      
       var fileListHeaderPreview = document.createElement('th');
       fileListHeaderPreview.innerHTML = 'Preview';
       fileListHeaderPreview.classList.add('sorttable_nosort');
+      fileListHeaderRow.appendChild(fileListHeaderPreview);
+
       var fileListHeaderSize = document.createElement('th');
       fileListHeaderSize.innerHTML = 'Size';
       fileListHeaderSize.classList.add('sorttable_prettybytes');
+      fileListHeaderRow.appendChild(fileListHeaderSize);
+
       var fileListHeaderModified = document.createElement('th');
       fileListHeaderModified.innerHTML = 'Modified';
+      fileListHeaderRow.appendChild(fileListHeaderModified);
+      
       var fileListHeaderModifiedText = document.createElement('th');
       fileListHeaderModifiedText.innerHTML = '';
       fileListHeaderModifiedText.classList.add('sorttable_nosort');
-      fileListHeaderRow.appendChild(fileListHeaderName);
-      fileListHeaderRow.appendChild(fileListHeaderPreview);
-      fileListHeaderRow.appendChild(fileListHeaderSize);
-      fileListHeaderRow.appendChild(fileListHeaderModified);
       fileListHeaderRow.appendChild(fileListHeaderModifiedText);
+      
       fileListHeader.appendChild(fileListHeaderRow);
       fileList.appendChild(fileListHeader);
 
