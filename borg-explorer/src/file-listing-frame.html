@@ -450,8 +450,10 @@
         fileItemExtract.innerHTML = `<a class="archive-entry-link" href="javascript:extractFile('${file.path}')">Extract</a>`;
         fileItemModified.innerHTML = moment(file.mtime).format("YYYY-MM-DD HH:mm:ss");
         fileItemModifiedText.innerHTML = moment(file.mtime).fromNow();
+        fileItemSize.innerHTML = prettyBytes(file.size);
 
         // FileItemName
+        // If directory, link to navigateArchive. Otherwise extractFile.
         if (file.type == 'd') {
           var fileLink = document.createElement('a');
           if (file.explicit) {
@@ -475,9 +477,6 @@
           fileLink.innerHTML = file.name;
           fileLink.href = `javascript:extractFile('${file.path}')`;
           fileItemName.appendChild(fileLink);
-
-          // fileItemSize
-          fileItemSize.innerHTML = prettyBytes(file.size);
 
           // fileItemPreview
           // If we can preview the file, add a link to do so.
