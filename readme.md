@@ -24,8 +24,6 @@ Still in development, functionality is rough. It's also very much "programmer ar
   * Image previews: `.jpg .png .gif .bmp .tiff .webp`
   * Text previews: `.txt .md .sh .html .js .cs .cpp .c .h .yml .json, etc.`
 * Extracting files and directories from an archive.
-  * Kind of clunky, files are extracted to the full subtree within the archive.
-  * Extracting an entire directory requires you to click on "Extract" for a file first to bring up the extract UI.
 * Very primitive settings menu for setting borg installation path.
 * SSH support
   * Support for setting '--remote-path' via settings menu.
