@@ -63,12 +63,12 @@ td {
   padding: 0.1em;
 }
 
-.file-size, tbody>tr>:nth-child(3) {
+.file-size, tbody>tr>:nth-child(4) {
   font-size: smaller;
   font-weight: normal;
 }
 
-.file-date, .directory-date, .archive-date, tbody>tr>:nth-child(5) {
+.file-date, .directory-date, .archive-date, tbody>tr>:nth-child(6) {
   font-size: smaller;
   font-weight: bold;
 }
