@@ -410,6 +410,11 @@
       fileListHeaderPreview.classList.add('sorttable_nosort');
       fileListHeaderRow.appendChild(fileListHeaderPreview);
 
+      var fileListHeaderExtract = document.createElement('th');
+      fileListHeaderExtract.innerHTML = 'Extract';
+      fileListHeaderExtract.classList.add('sorttable_nosort');
+      fileListHeaderRow.appendChild(fileListHeaderExtract);
+
       var fileListHeaderSize = document.createElement('th');
       fileListHeaderSize.innerHTML = 'Size';
       fileListHeaderSize.classList.add('sorttable_prettybytes');
@@ -423,7 +428,7 @@
       fileListHeaderModifiedText.innerHTML = '';
       fileListHeaderModifiedText.classList.add('sorttable_nosort');
       fileListHeaderRow.appendChild(fileListHeaderModifiedText);
-      
+
       fileListHeader.appendChild(fileListHeaderRow);
       fileList.appendChild(fileListHeader);
 
@@ -432,16 +437,21 @@
         var fileItem = document.createElement('tr');
         var fileItemName = document.createElement('td');
         var fileItemPreview = document.createElement('td');
+        var fileItemExtract = document.createElement('td');
         var fileItemSize = document.createElement('td');
         var fileItemModified = document.createElement('td');
         var fileItemModifiedText = document.createElement('td');
 
+        // Set defaults in case we don't have anything to show
         fileItemPreview.innerHTML = '-';
         fileItemSize.innerHTML = '-';
 
+        // These are always the same no matter what
+        fileItemExtract.innerHTML = `<a class="archive-entry-link" href="javascript:extractFile('${file.path}')">Extract</a>`;
         fileItemModified.innerHTML = moment(file.mtime).format("YYYY-MM-DD HH:mm:ss");
         fileItemModifiedText.innerHTML = moment(file.mtime).fromNow();
 
+        // FileItemName
         if (file.type == 'd') {
           var fileLink = document.createElement('a');
           if (file.explicit) {
@@ -465,8 +475,11 @@
           fileLink.innerHTML = file.name;
           fileLink.href = `javascript:extractFile('${file.path}')`;
           fileItemName.appendChild(fileLink);
+
+          // fileItemSize
           fileItemSize.innerHTML = prettyBytes(file.size);
 
+          // fileItemPreview
           // If we can preview the file, add a link to do so.
           const fileName = file.path.split('/').pop();
           const fileIsDotFile = fileName.startsWith('.');
@@ -495,6 +508,7 @@
         }
         fileItem.appendChild(fileItemName);
         fileItem.appendChild(fileItemPreview);
+        fileItem.appendChild(fileItemExtract);
         fileItem.appendChild(fileItemSize);
         fileItem.appendChild(fileItemModified);
         fileItem.appendChild(fileItemModifiedText);
