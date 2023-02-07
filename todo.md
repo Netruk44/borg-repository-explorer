@@ -3,10 +3,13 @@
 - [ ] Add a way to cancel loading an archive or check a repository.
 - [ ] Show navigation topbar when loading an archive
 - [ ] Refresh "open repository" panel when config window is saved to account for user config changes.
-- [ ] Calculate directory size
 - [ ] Add navigation/location text box to manually enter a directory to navigate to.
 
 ## Completed
+### v0.0.7
+- [X] Calculate directory size
+- [X] Directory extraction
+
 ### v0.0.6
 - [X] **File Explorer**: Table-based layout
 - [X] **File Explorer**: Sort by any header column (Name, Size, Modified Date)
