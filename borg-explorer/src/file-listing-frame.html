@@ -386,6 +386,19 @@
       return fileList;
     }
 
+    function calculateDirectorySize(directory) {
+      var size = 0;
+      for (var file of directory.getChildren()) {
+        if (file.type == 'd') {
+          size += calculateDirectorySize(file);
+        }
+        else {
+          size += file.size;
+        }
+      }
+      return size;
+    }
+
     function generateFileTable(currentPathChildren) {
       // Generate a table of files and directories.
       // Links to directories will call navigateArchive with the relative path.
@@ -450,7 +463,6 @@
         fileItemExtract.innerHTML = `<a class="archive-entry-link" href="javascript:extractFile('${file.path}')">Extract</a>`;
         fileItemModified.innerHTML = moment(file.mtime).format("YYYY-MM-DD HH:mm:ss");
         fileItemModifiedText.innerHTML = moment(file.mtime).fromNow();
-        fileItemSize.innerHTML = prettyBytes(file.size);
 
         // FileItemName
         // If directory, link to navigateArchive. Otherwise extractFile.
@@ -465,6 +477,10 @@
           fileLink.innerHTML = `${file.name}/`;
           fileLink.href = `javascript:navigateArchive('${file.path}')`;
           fileItemName.appendChild(fileLink);
+
+          // FileItemSize
+          // If the item is a directory, calculate the size of all the files within.
+          fileItemSize.innerHTML = prettyBytes(calculateDirectorySize(file));
         }
         else {
           var fileLink = document.createElement('a');
@@ -504,6 +520,10 @@
             fileItemPreview.innerHTML = '';
             fileItemPreview.appendChild(filePreviewLink);
           }
+
+          // fileItemSize
+          // If the item is a file, show the size.
+          fileItemSize.innerHTML = prettyBytes(file.size);
         }
         fileItem.appendChild(fileItemName);
         fileItem.appendChild(fileItemPreview);
