@@ -4,6 +4,7 @@
 - [ ] Show navigation topbar when loading an archive
 - [ ] Refresh "open repository" panel when config window is saved to account for user config changes.
 - [ ] Add navigation/location text box to manually enter a directory to navigate to.
+- [ ] Fix extraction clunkiness (when extracting a subdirectory, don't also extract its parent path, and other issues with extracting)
 
 ## Completed
 ### v0.0.7
