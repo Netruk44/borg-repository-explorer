@@ -27,6 +27,7 @@ h2, h3, h4, h5, h6 {
   font-weight: normal;
   margin: 0;
   padding: 0;
+  user-select: none;
 }
 
 h1 {
@@ -34,6 +35,7 @@ h1 {
   color: #009900;
   font-family: 'Black Ops One', "Courier New", monospace;
   padding: 10px;
+  user-select: none;
 }
 
 .flex-container-horiz {

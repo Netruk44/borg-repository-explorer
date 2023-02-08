@@ -269,6 +269,7 @@
       document.body.appendChild(archiveMetadata);
 
       var navList = document.createElement('ul');
+      navList.classList.add('archive-nav-list');
       // Add a link to go up a directory.
       if (currentNavigationPath != '') {
         var upItem = document.createElement('li');

@@ -82,6 +82,10 @@ td {
   font-weight: bold;
 }
 
+.archive-nav-list {
+  list-style-type: none;
+}
+
 .image-preview {
   padding-top: 1em;
 }
