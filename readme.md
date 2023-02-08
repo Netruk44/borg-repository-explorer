@@ -58,7 +58,7 @@ At some point, figuring out how to start a fresh conversation with ChatGPT (sett
 <img src="./images/ss4.png" width=650 />
 <p align='center'>Loading an archive</p>
 
-<img src="./images/ss3.png?" width=650 />
+<img src="./images/ss3.png" width=650 />
 <p align='center'>Listing of files within an archive.</p>
 
 <img src="./images/ss5.png" width=650 />
