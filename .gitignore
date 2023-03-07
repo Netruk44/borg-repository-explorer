@@ -1,3 +1,7 @@
 
 # Mac OS
 .DS_Store
+
+# Archive files
+scripts/*.zip
+scripts/completed/
