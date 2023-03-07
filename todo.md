@@ -3,12 +3,14 @@
 - [ ] Add a way to cancel loading an archive or check a repository.
 - [ ] Show navigation topbar when loading an archive
 - [ ] Refresh "open repository" panel when config window is saved to account for user config changes.
-- [ ] Add navigation/location text box to manually enter a directory to navigate to.
 - [ ] Fix extraction clunkiness (when extracting a subdirectory, don't also extract its parent path, and other issues with extracting)
 - [ ] Borg 2.0 support
 - [ ] Add option for text string on file timestamps ("x hours/months/years ago") to be relative to archive creation time instead of relative to now (e.g. "x hours/days/years old")
 
 ## Completed
+### v0.0.8
+- [X] Add navigation/location text box to manually enter a directory to navigate to.
+
 ### v0.0.7
 - [X] Calculate directory size
 - [X] Directory extraction
