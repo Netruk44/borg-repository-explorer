@@ -2,6 +2,7 @@
 <html>
   <head>
     <title>Borg Repository Listing</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
     <link rel="stylesheet" type="text/css" href="file-listing-frame.css">
   </head>
   <body>
@@ -257,17 +258,66 @@
       var currentPathItem = currentArchive.getItem(currentNavigationPath);
       var currentPathChildren = currentPathItem.getChildren();
 
-      // Create a header with the archive name and current path.
+      // Create a header with the archive name.
       var archiveMetadata = document.createElement('div');
       archiveMetadata.classList.add('archive-info');
       archiveMetadata.innerHTML = `
         <h2>Listing for archive "${currentArchiveName}"</h2>
-        <strong>Current Path:</strong> "${currentNavigationPath}"<br><br>
         
         <a href="javascript:closeRepository()" class="close-link">↩ Open a new repository</a><br>
         <a href="javascript:refreshRepository()" class="close-link">← Close "${currentArchiveName}"</a>`;
       document.body.appendChild(archiveMetadata);
 
+      // Create an editable text box for the current navigation path.
+      var navigationForm = document.createElement('form');
+      navigationForm.classList.add('archive-navigation');
+      navigationForm.classList.add('flex-container-horiz');
+      document.body.appendChild(navigationForm);
+
+      // Label
+      var pathLabelDiv = document.createElement('div');
+      pathLabelDiv.classList.add('flex-item');
+      pathLabelDiv.style.flexGrow = 0;
+      navigationForm.appendChild(pathLabelDiv);
+
+      var pathLabel = document.createElement('label');
+      pathLabel.classList.add('path-label');
+      pathLabel.innerHTML = 'Current path:';
+      pathLabelDiv.appendChild(pathLabel);
+
+      // Input textbox
+      var pathInputDiv = document.createElement('div');
+      pathInputDiv.classList.add('flex-container-item');
+      pathInputDiv.style.flexGrow = 1;
+      navigationForm.appendChild(pathInputDiv);
+
+      var pathInput = document.createElement('input');
+      pathInput.type = 'text';
+      pathInput.classList.add('path-input');
+      pathInput.value = currentNavigationPath + '/';
+      pathInputDiv.appendChild(pathInput);
+
+      // Button
+      var pathButtonDiv = document.createElement('div');
+      pathButtonDiv.classList.add('flex-item');
+      pathButtonDiv.style.flexGrow = 0;
+      navigationForm.appendChild(pathButtonDiv);
+
+      var pathButton = document.createElement('button');
+      pathButton.classList.add('path-button');
+      pathButton.innerHTML = 'Go';
+      pathButton.type = 'submit';
+      pathButtonDiv.appendChild(pathButton);
+
+      var doNavigate = function() {
+        // Trim the path and remove any trailing slashes.
+        pathInput.value = pathInput.value.trim().replace(/\/+$/, '');
+        navigateArchive(pathInput.value);
+        return false;
+      }
+      navigationForm.onsubmit = doNavigate;
+
+      // Go up / exit links
       var navList = document.createElement('ul');
       navList.classList.add('archive-nav-list');
       // Add a link to go up a directory.

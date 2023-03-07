@@ -95,3 +95,14 @@ td {
   font-weight: bold;
   color: #006600;
 }
+
+.archive-navigation {
+  padding: 0.5em 1em;
+  margin: 0;
+  background-color: #353;
+  color: #fff;
+}
+
+.path-label {
+  font-weight: bold;
+}

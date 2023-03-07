@@ -38,9 +38,12 @@ h1 {
   user-select: none;
 }
 
-.flex-container-horiz {
+.full-width-input {
   margin-left: 0.5em;
   margin-right: 0.5em;
+}
+
+.flex-container-horiz {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -57,8 +60,9 @@ h1 {
 .flex-container-item {
   flex: 1;
 }
+
 .flex-container-item > input[type="password"], .flex-container-item > input[type="text"] {
-  width: 100%;
+  width:-webkit-fill-available;
 }
 
 .label {
