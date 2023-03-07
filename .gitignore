@@ -5,3 +5,4 @@
 # Archive files
 scripts/*.zip
 scripts/completed/
+scripts/*.env

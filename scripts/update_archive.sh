@@ -6,14 +6,20 @@
 
 ## Configuration
 
+# Load environment variables from .env file.
+set -o allexport
+source .env
+set +o allexport
+
+# Expected environment variables:
 # The destination repository (possibly located over ssh)
-REPOSITORY=""
+#REPOSITORY=""
 
 # The passphrase for the repository (optional)
-BORG_PASSPHRASE=""
+#BORG_PASSPHRASE=""
 
 # The remote path for borg (optional)
-REMOTE_PATH="/usr/local/bin/borg"
+#REMOTE_PATH="/usr/local/bin/borg"
 
 
 ## Checks
