@@ -1,6 +1,6 @@
 # Borg Backup Repository Explorer
 
-<img src="./images/ss1.png" width=650 />
+<img src="./images/screenshot1.png" width=650 />
 
 This repository contains a personal project, a simple GUI explorer for Borg repositories.
 
@@ -52,20 +52,20 @@ The fun new thing to do is to make ChatGPT build your entire webapp for you. I'v
 At some point, figuring out how to start a fresh conversation with ChatGPT (setting up a chat question with the required context to generate the kind of code I was looking for) was too much work, so I switched over to using Copilot instead. 
 
 ## Screenshot(s)
-<img src="./images/ss2.png" width=650 />
+<img src="./images/screenshot2.png" width=650 />
 <p align='center'>Listing of archives within a repository.</p>
 
-<img src="./images/ss4.png" width=650 />
+<img src="./images/screenshot4.png" width=650 />
 <p align='center'>Loading an archive</p>
 
-<img src="./images/ss3.png?" width=650 />
+<img src="./images/screenshot3.png" width=650 />
 <p align='center'>Listing of files within an archive.</p>
 
-<img src="./images/ss5.png" width=650 />
+<img src="./images/screenshot5.png" width=650 />
 <p align='center'>Previewing an image within an archive.</p>
 
-<img src="./images/ss7.png" width=650 />
+<img src="./images/screenshot7.png" width=650 />
 <p align='center'>Previewing a text file within an archive.</p>
 
-<img src="./images/ss6.png" width=650 />
+<img src="./images/screenshot6.png" width=650 />
 <p align='center'>Extracting a file from an archive.</p>
