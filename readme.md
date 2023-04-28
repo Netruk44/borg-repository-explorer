@@ -2,9 +2,9 @@
 
 <img src="./images/screenshot1.png" width=650 />
 
-This repository contains a personal project, a simple GUI explorer for Borg repositories.
+This repository contains a personal project, a simple GUI explorer for Borg repositories. This project is mainly intended for MacOS where FUSE/`borg mount` isn't as easy to use as it is on Linux, though there is also a Linux build available.
 
-This project is is a **⚠️Work In Progress⚠️**, and comes with no guarantees, this project may not be maintained indefinitely.
+This project comes with no guarantees, and may not be maintained indefinitely. However, I do personally use this to browse my own Borg repositories, so I will likely continue to make updates for as long as I use Borg.
 
 This project was created with assistance from [ChatGPT](https://chat.openai.com/chat) and [Copilot](https://copilot.github.com).
 
@@ -13,7 +13,9 @@ You can find download links on the [releases](https://github.com/Netruk44/borg-r
 
 ## Current State
 
-Still in development, functionality is rough. It's also very much "programmer art" style and likely unintuitive to use. You can blame the AI's for what it looks like, I have no taste for HTML and CSS 😊. The poor UX is definitely my fault, though. 
+Usability is rough, but functionally this project is mostly complete. The remaining changes are mostly usability-related, and adding support for the upcoming Borg 2.0.
+
+Style is mainly "programmer art"-tier and likely unintuitive to use. You can blame the AI's for what it looks like, I have no taste for HTML and CSS 😊. The poor UX is definitely my fault, though. 
 
 ### Implemented
 * Browsing for a repository directory.
