@@ -6,6 +6,7 @@
 - [ ] Fix extraction clunkiness (when extracting a subdirectory, don't also extract its parent path, and other issues with extracting)
 - [ ] Borg 2.0 support
 - [ ] Add option for text string on file timestamps ("x hours/months/years ago") to be relative to archive creation time instead of relative to now (e.g. "x hours/days/years old")
+- [ ] Video previews
 
 ## Completed
 ### v0.0.8
