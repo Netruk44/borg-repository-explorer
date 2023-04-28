@@ -1,5 +1,8 @@
 # To-Do List
 
+Also available on my personal [Vikunja Instance](https://todo.danieltperry.me/share/YTUdzoNzfQQBuvPxIeVEgcyLMIjcEVISQUQEiHry/auth?view=list).
+I try to keep the lists in sync, but I'm sure it won't be perfect.
+
 - [ ] Add a way to cancel loading an archive or check a repository.
 - [ ] Show navigation topbar when loading an archive
 - [ ] Refresh "open repository" panel when config window is saved to account for user config changes.
@@ -7,6 +10,7 @@
 - [ ] Borg 2.0 support
 - [ ] Add option for text string on file timestamps ("x hours/months/years ago") to be relative to archive creation time instead of relative to now (e.g. "x hours/days/years old")
 - [ ] Video previews
+- [ ] Add textbox to filter file browser listing
 
 ## Completed
 ### v0.0.8
