@@ -52,7 +52,7 @@ At some point, figuring out how to start a fresh conversation with ChatGPT (sett
 
 Usability and style are rough, but functionally this project is mostly complete. The remaining changes are mostly usability-related, and adding support for the upcoming Borg 2.0.
 
-You can blame the AI's for how it looks, I have no taste for HTML and CSS 😊. The poor UX is definitely my fault, though. 
+You can blame the AI's for how it looks, I have no taste for HTML and CSS 😊. The poor UX is definitely my fault, though. You should expect unexplained waits while things run in the background with no progress indicator whatsoever 😅.
 
 ### Implemented
 * Browsing for a repository directory.
