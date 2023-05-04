@@ -5,14 +5,14 @@
 ## Downloads
 You can find download links on the [releases](https://github.com/Netruk44/borg-repository-explorer/releases) page.
 
-### Note about MacOS Gatekeeper
-I don't have an Apple Developer account, it costs $99/year and this is literally the only Mac app I've ever made, which means I can't sign this app.
-
-What that means **for you** is that MacOS won't let you run this program unless you're an administrator and can approve specific unsigned apps to run on your machine (you probably are).
-
-By default, if you double click Borg Explorer, MacOS will show a warning and only let you move the application to the trash. If you have administrator rights, you can right click Borg Explorer, then select "Open". You'll then get a different dialog that will let you continue to run the program.
-
-> **Note**: Borg Explorer itself does not need administrator permissions in order to run. Administrator permissions are needed solely to approve the unsigned program to run.
+#### Note about MacOS Gatekeeper
+> I don't have an Apple Developer account, it costs $99/year and this is literally the only Mac app I've ever made, which means I can't sign this app.
+> 
+> What that means **for you** is that MacOS won't let you run this program unless you're an administrator and can approve specific unsigned apps to run on your machine (you probably are).
+> 
+> By default, if you double click Borg Explorer, MacOS will show a warning and only let you move the application to the trash. If you have administrator rights, you can right click Borg Explorer, then select "Open". You'll then get a different dialog that will let you continue to run the program.
+> 
+>> **Note**: Borg Explorer itself does not need administrator permissions in order to run. Administrator permissions are needed solely to approve the unsigned program to run.
 
 ----
 
