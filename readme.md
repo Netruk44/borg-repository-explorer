@@ -18,7 +18,7 @@ You can find download links on the [releases](https://github.com/Netruk44/borg-r
 
 Usability and style are rough, but functionally this project is mostly complete. The remaining changes are mostly usability-related, and adding support for the upcoming Borg 2.0.
 
-You can blame the AI's for how it looks, I have no taste for HTML and CSS 😊. The poor UX is definitely my fault, though. You should expect unexplained waits while things run in the background with no progress indicator whatsoever 😅.
+You can blame the AI's for how it looks (I used ChatGPT/Copilot to generate much of the HTML layout and CSS). The poor UX is definitely my fault, though. You should expect unexplained waits while things run in the background with no progress indicator whatsoever 😅.
 
 ### Implemented
 * Browsing for a repository directory.
