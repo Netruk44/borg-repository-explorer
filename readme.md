@@ -3,7 +3,7 @@
 <img src="./images/screenshot1.png" width=650 />
 
 ## Downloads
-You can find download links on the [releases](https://github.com/Netruk44/borg-repository-explorer/releases) page.
+You can find download links on the [releases](https://github.com/Netruk44/borg-repository-explorer/releases) page. Expand the "Assets" section to find the download links.
 
 #### Note about MacOS Gatekeeper
 > I don't have an Apple Developer account, it costs $99/year and this is literally the only Mac app I've ever made, which means I can't sign this app.
