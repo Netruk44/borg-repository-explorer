@@ -14,6 +14,28 @@ You can find download links on the [releases](https://github.com/Netruk44/borg-r
 > 
 >> **Note**: Borg Explorer itself does not need administrator permissions in order to run. Administrator permissions are needed solely to approve the unsigned program to run.
 
+## Current State
+
+Usability and style are rough, but functionally this project is mostly complete. The remaining changes are mostly usability-related, and adding support for the upcoming Borg 2.0.
+
+You can blame the AI's for how it looks, I have no taste for HTML and CSS 😊. The poor UX is definitely my fault, though. You should expect unexplained waits while things run in the background with no progress indicator whatsoever 😅.
+
+### Implemented
+* Browsing for a repository directory.
+* Verifying a passphrase is correct for a Borg repository.
+* Listing archives contained within a Borg repository.
+* Very rudimentary listing of files contained within an archive.
+* Previewing archive contents in the explorer
+  * Image previews: `.jpg .png .gif .bmp .tiff .webp`
+  * Text previews: `.txt .md .sh .html .js .cs .cpp .c .h .yml .json, etc.`
+  * **TODO**: Video previews
+* Extracting files and directories from an archive.
+* Very primitive settings menu for setting borg installation path.
+* SSH support
+  * Support for setting '--remote-path' via settings menu.
+ 
+[Screenshots](#screenshots) are available below.
+
 ----
 
 ## About the Project
@@ -48,27 +70,7 @@ I've never written anything using Electron before and wanted an excuse to learn 
 
 At some point, figuring out how to start a fresh conversation with ChatGPT (setting up a chat question with the required context to generate the kind of code I was looking for) was too much work, so I switched over to using Copilot instead. 
 
-## Current State
-
-Usability and style are rough, but functionally this project is mostly complete. The remaining changes are mostly usability-related, and adding support for the upcoming Borg 2.0.
-
-You can blame the AI's for how it looks, I have no taste for HTML and CSS 😊. The poor UX is definitely my fault, though. You should expect unexplained waits while things run in the background with no progress indicator whatsoever 😅.
-
-### Implemented
-* Browsing for a repository directory.
-* Verifying a passphrase is correct for a Borg repository.
-* Listing archives contained within a Borg repository.
-* Very rudimentary listing of files contained within an archive.
-* Previewing archive contents in the explorer
-  * Image previews: `.jpg .png .gif .bmp .tiff .webp`
-  * Text previews: `.txt .md .sh .html .js .cs .cpp .c .h .yml .json, etc.`
-  * **TODO**: Video previews
-* Extracting files and directories from an archive.
-* Very primitive settings menu for setting borg installation path.
-* SSH support
-  * Support for setting '--remote-path' via settings menu.
-
-## Screenshot(s)
+## Screenshots
 <img src="./images/screenshot2.png" width=650 />
 <p align='center'>Listing of archives within a repository.</p>
 
