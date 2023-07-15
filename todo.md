@@ -10,7 +10,7 @@ I try to keep the lists in sync, but I'm sure it won't be perfect.
 - [ ] Borg 2.0 support
 - [ ] Add option for text string on file timestamps ("x hours/months/years ago") to be relative to archive creation time instead of relative to now (e.g. "x hours/days/years old")
 - [ ] Video previews
-- [ ] Add textbox to filter file browser listing
+- [ ] Add textbox for searching file browser listing (include checkbox for searching child directories)
 
 ## Completed
 ### v0.0.8
