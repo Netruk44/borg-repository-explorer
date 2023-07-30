@@ -6,6 +6,7 @@
 - [ ] Extraction improvements
     - [ ] When extracting a subdirectory of an archive, don't include the whole subtree to that folder in the output folder.
     - [ ] Extraction popup window with status, progress bar, and cancel button.
+    - [ ] Add quotes around file paths in extraction command to allow for special characters in file names.
 - [ ] Borg 2.0 support
 - [ ] Add option for text string on file timestamps ("x hours/months/years ago") to be relative to archive creation time instead of relative to now (e.g. "x hours/days/years old")
 - [ ] Video previews
