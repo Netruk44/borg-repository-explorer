@@ -79,9 +79,11 @@ class Command {
       // Make a copy of args
       const args = parent.args.slice();
 
-      // Add quotes to each argument if it contains spaces.
+      // Add quotes to each argument if it contains special characters.
+      // (space, vertical bar, ampersand)
+      let requiresQuotes = /[\s|&]/;
       for (let i = 0; i < args.length; i++) {
-        if (args[i].includes(' ')) {
+        if (requiresQuotes.test(args[i])) {
           args[i] = `"${args[i]}"`;
         }
       }
