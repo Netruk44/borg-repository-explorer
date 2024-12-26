@@ -20,6 +20,29 @@ Usability and style are rough, but functionally this project is mostly complete.
 
 You can blame the AI's for how it looks (I used ChatGPT/Copilot to generate much of the HTML layout and CSS). The poor UX is definitely my fault, though. You should expect unexplained waits while things run in the background with no progress indicator whatsoever 😅.
 
+### Security
+
+> [!WARNING]  
+> Currently, the Borg repository passphrase is stored **unencrypted** in memory while you are browsing an archive.  
+> This can potentially pose a security risk if a malicious app were to read the memory of this app while it's running.  
+> If this is a concern for you, you should not use this app.
+
+The way this project interacts with Borg repositories is by running `borg` commands in the background. No code in this project ever directly touches a Borg repository.
+
+It's up to the user to ensure that the Borg installation on their machine is secure and that they trust the repository they're browsing.
+
+You can see the complete list of commands that can be run by this project in the [borg.js](./borg-explorer/src/lib/borg.js) file.
+
+The only commands that are run are: 
+
+* `borg info` (for determining if a folder is a valid Borg repository)
+* `borg list` (for listing archives and files)
+* `borg extract` (for extracting contents)
+
+This app never connects to any server for any reason, period.
+
+You should feel free to completely block internet access for this app, as it has no need for it. If your Borg repository is on a remote SSH server, Borg itself will be the one to make the connection, never this app.
+
 ### Implemented
 * Browsing for a repository directory.
 * Verifying a passphrase is correct for a Borg repository.
