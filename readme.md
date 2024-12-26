@@ -23,8 +23,10 @@ You can blame the AI's for how it looks (I used ChatGPT/Copilot to generate much
 ### Security
 
 > [!WARNING]  
-> Currently, the Borg repository passphrase is stored **unencrypted** in memory while you are browsing an archive.  
-> This can potentially pose a security risk if a malicious app were to read the memory of this app while it's running.  
+> Currently, the Borg repository passphrase is stored **unencrypted** in memory while you are browsing an archive.
+>
+> This can potentially pose a security risk if a malicious app were to read the memory of this app while it's running.
+>
 > If this is a concern for you, you should not use this app.
 
 The way this project interacts with Borg repositories is by running `borg` commands in the background. No code in this project ever directly touches a Borg repository.
