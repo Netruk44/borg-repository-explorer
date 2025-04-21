@@ -3,7 +3,7 @@
 <img src="./images/screenshot1.png" width=650 />
 
 ## Screenshots
-More screenshots are available at the bottom of this readme.
+More screenshots are [available](#additional-screenshots) at the bottom of this readme.
 
 ## Downloads
 You can find download links on the [releases](https://github.com/Netruk44/borg-repository-explorer/releases) page.
@@ -100,7 +100,7 @@ I've never written anything using Electron before and wanted an excuse to learn 
 
 At some point, figuring out how to start a fresh conversation with ChatGPT (setting up a chat question with the required context to generate the kind of code I was looking for) was too much work, so I switched over to using Copilot instead. 
 
-## Screenshots
+## Additional Screenshots
 <img src="./images/screenshot2.png" width=650 />
 <p align='center'>Listing of archives within a repository.</p>
 
